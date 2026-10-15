@@ -1,0 +1,33 @@
+path: "./src/sft_cv/decision_system/assets/Maryland1GEarth.png"
+manifold_center:  # gps coordinates of the center of the approximation (so is not necessarily the geometric center)
+  lat: 38.315748
+  lon: -76.551709
+three_points:  # 3 points of the image (there is not a preference)
+  point1:
+    lat: 38.316006
+    lon: -76.550792
+    coox: 7226
+    cooy: 229
+  point2:
+    lat: 38.315930
+    lon: -76.552869
+    coox: 468
+    cooy: 2016
+  point3:
+    lat: 38.315307
+    lon: -76.551465
+    coox: 5654
+    cooy: 3638
+drop_area:
+  LU:
+    lat: 38.315895
+    lon: -76.552519
+  LD:
+    lat: 38.315683
+    lon: -76.552586
+  RD:
+    lat: 38.315386
+    lon: -76.550875
+  RU:
+    lat: 38.315607
+    lon: -76.550800

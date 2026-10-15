@@ -1,0 +1,17 @@
+stages:
+  cam: 
+    mock_camera_engine:
+      field1: awawaw
+  aggregator: 
+    default:
+      field1: wawawa
+  communicator: 
+    mavlink_communicator:
+      field1: asdasd
+
+logger:
+  log_console: true
+  log_file: /tmp/sft_cv.log
+  log_format: '[%(asctime)s] p%(process)s {%(pathname)s:%(lineno)d} %(levelname)s
+      - %(message)s'
+  log_level: INFO

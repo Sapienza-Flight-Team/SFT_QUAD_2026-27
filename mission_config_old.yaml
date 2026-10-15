@@ -1,0 +1,79 @@
+# Fixed for the lifetime of a pipeline. Resolution is [width, height]; Bayer
+# images contain one uint8 channel. Restart the pipeline after changing this.
+image:
+  resolution: [5320, 3032]
+  channels: 1
+
+task:
+  - name: "DEFAULT"
+    camera: {}
+    preprocessor:
+      target_resolution: [2656, 1504]
+    inference_engine:
+      images_per_batch: 1
+      # Raw YOLO classes: 0=GCP_numbered, 1=GCP_non_numbered, 2=bullseye, 3=X.
+      classes: [0, 1, 2, 3]
+    decision_system:
+      instance_splitter:
+        enabled: true
+        min_instance_distance_m: 15.0
+      class_handler:
+        classes: [0, 1, 2, 3]
+      targets:
+        0: {name: GCP_numbered, clusters: 1, clusterize: true}
+        1: {name: GCP_non_numbered, clusters: 1, clusterize: true}
+        2: {name: BULLSEYE, clusters: 0, clusterize: false}
+        3: {name: X, clusters: 0, clusterize: false}
+    mavlink: {}
+
+  - name: "BULLSEYE"
+    camera: {}
+    preprocessor:
+      downsize_factor: 1
+      target_resolution: [2656, 1504]
+    inference_engine:
+      images_per_batch: 1
+      classes: [2]
+    decision_system:
+      bbox_size_filter_px: 584
+      bbox_size_filter_ref_alt_m: 50.0
+      class_handler:
+        classes: [2]
+      targets:
+        2: {name: BULLSEYE, clusters: 1, clusterize: true}
+    mavlink:
+      altitude: 20
+
+  - name: "PERIMETER"
+    camera: {}
+    preprocessor:
+      target_resolution: [2656, 1504]
+    inference_engine:
+      images_per_batch: 1
+      classes: [0, 1]
+    decision_system:
+      instance_splitter:
+        enabled: true
+        min_instance_distance_m: 15.0
+      class_handler:
+        classes: [1]
+      targets:
+        # 3 or 4 GCPs delimit the area; count decided at runtime by the
+        # perimeter localizer. Set to a plain int (e.g. 4) if known at briefing.
+        1: {name: GCP_non_numbered, clusters: [3, 4], clusterize: true}
+    mavlink:
+      altitude: 100
+
+  - name: "NUMBERS"
+    camera: {}
+    preprocessor:
+      target_resolution: [2656, 1504]
+    inference_engine:
+      images_per_batch: 1
+      classes: [0]
+    decision_system:
+      class_handler:
+        classes: [0]
+      targets:
+        0: {name: GCP_numbered, clusters: 10, clusterize: true}
+    mavlink: {}

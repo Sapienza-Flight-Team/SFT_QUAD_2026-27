@@ -1,0 +1,4129 @@
+{
+  "python": "3.12.12 (main, Dec  5 2025, 20:21:41) [Clang 21.1.4 ]",
+  "platform": "Linux-7.3.0-rc6-273-tkg-bore-llvm-x86_64-with-glibc2.44",
+  "cpu_affinity": [
+    0
+  ],
+  "revision": "2b59634f5f203785d124061e37689e357575ed16",
+  "repeats": 3,
+  "results": [
+    {
+      "variant": "current",
+      "consumers": 1,
+      "stripes": 2,
+      "mode": "fast",
+      "iterations": 1000,
+      "wall_us": 25.406496999999998,
+      "cpu_us": 25.336748,
+      "p95_us": 35.88,
+      "payload_bytes": 64,
+      "runs": [
+        {
+          "variant": "current",
+          "consumers": 1,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 44.508047,
+          "cpu_us": 28.978403,
+          "p95_us": 41.95,
+          "payload_bytes": 64
+        },
+        {
+          "variant": "current",
+          "consumers": 1,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 25.406496999999998,
+          "cpu_us": 25.336748,
+          "p95_us": 30.001,
+          "payload_bytes": 64
+        },
+        {
+          "variant": "current",
+          "consumers": 1,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 24.459812999999997,
+          "cpu_us": 24.379763999999998,
+          "p95_us": 35.88,
+          "payload_bytes": 64
+        }
+      ]
+    },
+    {
+      "variant": "reader_counts",
+      "consumers": 1,
+      "stripes": 2,
+      "mode": "fast",
+      "iterations": 1000,
+      "wall_us": 22.948286,
+      "cpu_us": 22.875417000000002,
+      "p95_us": 33.811,
+      "payload_bytes": 64,
+      "runs": [
+        {
+          "variant": "reader_counts",
+          "consumers": 1,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 23.175877,
+          "cpu_us": 23.104249,
+          "p95_us": 35.43,
+          "payload_bytes": 64
+        },
+        {
+          "variant": "reader_counts",
+          "consumers": 1,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 22.948286,
+          "cpu_us": 22.875417000000002,
+          "p95_us": 33.811,
+          "payload_bytes": 64
+        },
+        {
+          "variant": "reader_counts",
+          "consumers": 1,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 21.941342,
+          "cpu_us": 21.887082,
+          "p95_us": 26.61,
+          "payload_bytes": 64
+        }
+      ]
+    },
+    {
+      "variant": "incremental",
+      "consumers": 1,
+      "stripes": 2,
+      "mode": "fast",
+      "iterations": 1000,
+      "wall_us": 8.969747,
+      "cpu_us": 8.950838,
+      "p95_us": 13.61,
+      "payload_bytes": 64,
+      "runs": [
+        {
+          "variant": "incremental",
+          "consumers": 1,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 8.848906999999999,
+          "cpu_us": 8.821888000000001,
+          "p95_us": 12.421,
+          "payload_bytes": 64
+        },
+        {
+          "variant": "incremental",
+          "consumers": 1,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 9.207509,
+          "cpu_us": 9.1809,
+          "p95_us": 14.15,
+          "payload_bytes": 64
+        },
+        {
+          "variant": "incremental",
+          "consumers": 1,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 8.969747,
+          "cpu_us": 8.950838,
+          "p95_us": 13.61,
+          "payload_bytes": 64
+        }
+      ]
+    },
+    {
+      "variant": "current",
+      "consumers": 1,
+      "stripes": 2,
+      "mode": "pinned",
+      "iterations": 1000,
+      "wall_us": 22.637745,
+      "cpu_us": 22.575135999999997,
+      "p95_us": 32.03,
+      "payload_bytes": 64,
+      "runs": [
+        {
+          "variant": "current",
+          "consumers": 1,
+          "stripes": 2,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 22.279812999999997,
+          "cpu_us": 22.222853999999998,
+          "p95_us": 27.07,
+          "payload_bytes": 64
+        },
+        {
+          "variant": "current",
+          "consumers": 1,
+          "stripes": 2,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 22.637745,
+          "cpu_us": 22.575135999999997,
+          "p95_us": 35.07,
+          "payload_bytes": 64
+        },
+        {
+          "variant": "current",
+          "consumers": 1,
+          "stripes": 2,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 22.644285,
+          "cpu_us": 22.586146,
+          "p95_us": 32.03,
+          "payload_bytes": 64
+        }
+      ]
+    },
+    {
+      "variant": "reader_counts",
+      "consumers": 1,
+      "stripes": 2,
+      "mode": "pinned",
+      "iterations": 1000,
+      "wall_us": 21.816241,
+      "cpu_us": 21.765403,
+      "p95_us": 26.6,
+      "payload_bytes": 64,
+      "runs": [
+        {
+          "variant": "reader_counts",
+          "consumers": 1,
+          "stripes": 2,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 21.815462,
+          "cpu_us": 21.760144,
+          "p95_us": 27.04,
+          "payload_bytes": 64
+        },
+        {
+          "variant": "reader_counts",
+          "consumers": 1,
+          "stripes": 2,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 21.816241,
+          "cpu_us": 21.765403,
+          "p95_us": 26.46,
+          "payload_bytes": 64
+        },
+        {
+          "variant": "reader_counts",
+          "consumers": 1,
+          "stripes": 2,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 21.955322,
+          "cpu_us": 21.898553,
+          "p95_us": 26.6,
+          "payload_bytes": 64
+        }
+      ]
+    },
+    {
+      "variant": "incremental",
+      "consumers": 1,
+      "stripes": 2,
+      "mode": "pinned",
+      "iterations": 1000,
+      "wall_us": 8.800756999999999,
+      "cpu_us": 8.777496,
+      "p95_us": 10.851,
+      "payload_bytes": 64,
+      "runs": [
+        {
+          "variant": "incremental",
+          "consumers": 1,
+          "stripes": 2,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 8.816567,
+          "cpu_us": 8.794958000000001,
+          "p95_us": 10.851,
+          "payload_bytes": 64
+        },
+        {
+          "variant": "incremental",
+          "consumers": 1,
+          "stripes": 2,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 8.800756999999999,
+          "cpu_us": 8.777496,
+          "p95_us": 12.33,
+          "payload_bytes": 64
+        },
+        {
+          "variant": "incremental",
+          "consumers": 1,
+          "stripes": 2,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 8.724187,
+          "cpu_us": 8.704297,
+          "p95_us": 10.13,
+          "payload_bytes": 64
+        }
+      ]
+    },
+    {
+      "variant": "current",
+      "consumers": 6,
+      "stripes": 2,
+      "mode": "fast",
+      "iterations": 1000,
+      "wall_us": 123.549088,
+      "cpu_us": 122.760092,
+      "p95_us": 149.091,
+      "payload_bytes": 224,
+      "runs": [
+        {
+          "variant": "current",
+          "consumers": 6,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 119.12462,
+          "cpu_us": 118.595637,
+          "p95_us": 128.801,
+          "payload_bytes": 224
+        },
+        {
+          "variant": "current",
+          "consumers": 6,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 123.549088,
+          "cpu_us": 122.760092,
+          "p95_us": 149.091,
+          "payload_bytes": 224
+        },
+        {
+          "variant": "current",
+          "consumers": 6,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 126.30731,
+          "cpu_us": 125.658976,
+          "p95_us": 208.041,
+          "payload_bytes": 224
+        }
+      ]
+    },
+    {
+      "variant": "reader_counts",
+      "consumers": 6,
+      "stripes": 2,
+      "mode": "fast",
+      "iterations": 1000,
+      "wall_us": 125.062875,
+      "cpu_us": 124.434371,
+      "p95_us": 197.291,
+      "payload_bytes": 224,
+      "runs": [
+        {
+          "variant": "reader_counts",
+          "consumers": 6,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 125.062875,
+          "cpu_us": 124.434371,
+          "p95_us": 197.291,
+          "payload_bytes": 224
+        },
+        {
+          "variant": "reader_counts",
+          "consumers": 6,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 120.328265,
+          "cpu_us": 119.677482,
+          "p95_us": 131.98,
+          "payload_bytes": 224
+        },
+        {
+          "variant": "reader_counts",
+          "consumers": 6,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 126.3609,
+          "cpu_us": 125.721145,
+          "p95_us": 209.271,
+          "payload_bytes": 224
+        }
+      ]
+    },
+    {
+      "variant": "incremental",
+      "consumers": 6,
+      "stripes": 2,
+      "mode": "fast",
+      "iterations": 1000,
+      "wall_us": 26.262511,
+      "cpu_us": 26.108669999999996,
+      "p95_us": 39.67,
+      "payload_bytes": 224,
+      "runs": [
+        {
+          "variant": "incremental",
+          "consumers": 6,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 26.262511,
+          "cpu_us": 26.079772000000002,
+          "p95_us": 36.97,
+          "payload_bytes": 224
+        },
+        {
+          "variant": "incremental",
+          "consumers": 6,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 26.260540000000002,
+          "cpu_us": 26.108669999999996,
+          "p95_us": 39.67,
+          "payload_bytes": 224
+        },
+        {
+          "variant": "incremental",
+          "consumers": 6,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 27.456305,
+          "cpu_us": 27.267934,
+          "p95_us": 46.081,
+          "payload_bytes": 224
+        }
+      ]
+    },
+    {
+      "variant": "current",
+      "consumers": 6,
+      "stripes": 2,
+      "mode": "pinned",
+      "iterations": 1000,
+      "wall_us": 49.016106,
+      "cpu_us": 48.725999,
+      "p95_us": 76.7,
+      "payload_bytes": 224,
+      "runs": [
+        {
+          "variant": "current",
+          "consumers": 6,
+          "stripes": 2,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 55.459462,
+          "cpu_us": 55.005622,
+          "p95_us": 84.941,
+          "payload_bytes": 224
+        },
+        {
+          "variant": "current",
+          "consumers": 6,
+          "stripes": 2,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 49.016106,
+          "cpu_us": 48.725999,
+          "p95_us": 76.7,
+          "payload_bytes": 224
+        },
+        {
+          "variant": "current",
+          "consumers": 6,
+          "stripes": 2,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 45.20729,
+          "cpu_us": 44.948783000000006,
+          "p95_us": 52.77,
+          "payload_bytes": 224
+        }
+      ]
+    },
+    {
+      "variant": "reader_counts",
+      "consumers": 6,
+      "stripes": 2,
+      "mode": "pinned",
+      "iterations": 1000,
+      "wall_us": 45.228369,
+      "cpu_us": 44.851538999999995,
+      "p95_us": 73.48,
+      "payload_bytes": 224,
+      "runs": [
+        {
+          "variant": "reader_counts",
+          "consumers": 6,
+          "stripes": 2,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 44.894869,
+          "cpu_us": 44.604942,
+          "p95_us": 69.08,
+          "payload_bytes": 224
+        },
+        {
+          "variant": "reader_counts",
+          "consumers": 6,
+          "stripes": 2,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 45.641492,
+          "cpu_us": 45.345752,
+          "p95_us": 73.48,
+          "payload_bytes": 224
+        },
+        {
+          "variant": "reader_counts",
+          "consumers": 6,
+          "stripes": 2,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 45.228369,
+          "cpu_us": 44.851538999999995,
+          "p95_us": 73.55,
+          "payload_bytes": 224
+        }
+      ]
+    },
+    {
+      "variant": "incremental",
+      "consumers": 6,
+      "stripes": 2,
+      "mode": "pinned",
+      "iterations": 1000,
+      "wall_us": 10.803835,
+      "cpu_us": 10.727516,
+      "p95_us": 16.591,
+      "payload_bytes": 224,
+      "runs": [
+        {
+          "variant": "incremental",
+          "consumers": 6,
+          "stripes": 2,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 10.686315,
+          "cpu_us": 10.608396,
+          "p95_us": 16.27,
+          "payload_bytes": 224
+        },
+        {
+          "variant": "incremental",
+          "consumers": 6,
+          "stripes": 2,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 11.008085999999999,
+          "cpu_us": 10.940436,
+          "p95_us": 17.11,
+          "payload_bytes": 224
+        },
+        {
+          "variant": "incremental",
+          "consumers": 6,
+          "stripes": 2,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 10.803835,
+          "cpu_us": 10.727516,
+          "p95_us": 16.591,
+          "payload_bytes": 224
+        }
+      ]
+    },
+    {
+      "variant": "current",
+      "consumers": 32,
+      "stripes": 2,
+      "mode": "fast",
+      "iterations": 1000,
+      "wall_us": 1853.778889,
+      "cpu_us": 1849.4419890000001,
+      "p95_us": 2052.998,
+      "payload_bytes": 1056,
+      "runs": [
+        {
+          "variant": "current",
+          "consumers": 32,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 1862.915887,
+          "cpu_us": 1854.1245900000001,
+          "p95_us": 2081.379,
+          "payload_bytes": 1056
+        },
+        {
+          "variant": "current",
+          "consumers": 32,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 1853.778889,
+          "cpu_us": 1849.4419890000001,
+          "p95_us": 2052.998,
+          "payload_bytes": 1056
+        },
+        {
+          "variant": "current",
+          "consumers": 32,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 1840.726234,
+          "cpu_us": 1836.440163,
+          "p95_us": 2032.199,
+          "payload_bytes": 1056
+        }
+      ]
+    },
+    {
+      "variant": "reader_counts",
+      "consumers": 32,
+      "stripes": 2,
+      "mode": "fast",
+      "iterations": 1000,
+      "wall_us": 1896.254097,
+      "cpu_us": 1891.5371699999998,
+      "p95_us": 2177.79,
+      "payload_bytes": 1056,
+      "runs": [
+        {
+          "variant": "reader_counts",
+          "consumers": 32,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 1865.905389,
+          "cpu_us": 1861.348613,
+          "p95_us": 2057.449,
+          "payload_bytes": 1056
+        },
+        {
+          "variant": "reader_counts",
+          "consumers": 32,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 1918.774381,
+          "cpu_us": 1914.0951029999999,
+          "p95_us": 2380.57,
+          "payload_bytes": 1056
+        },
+        {
+          "variant": "reader_counts",
+          "consumers": 32,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 1896.254097,
+          "cpu_us": 1891.5371699999998,
+          "p95_us": 2177.79,
+          "payload_bytes": 1056
+        }
+      ]
+    },
+    {
+      "variant": "incremental",
+      "consumers": 32,
+      "stripes": 2,
+      "mode": "fast",
+      "iterations": 1000,
+      "wall_us": 118.87135799999999,
+      "cpu_us": 118.56956699999999,
+      "p95_us": 135.871,
+      "payload_bytes": 1056,
+      "runs": [
+        {
+          "variant": "incremental",
+          "consumers": 32,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 118.87135799999999,
+          "cpu_us": 118.56956699999999,
+          "p95_us": 135.871,
+          "payload_bytes": 1056
+        },
+        {
+          "variant": "incremental",
+          "consumers": 32,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 117.499473,
+          "cpu_us": 117.192341,
+          "p95_us": 131.341,
+          "payload_bytes": 1056
+        },
+        {
+          "variant": "incremental",
+          "consumers": 32,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 124.615803,
+          "cpu_us": 124.28350999999999,
+          "p95_us": 205.341,
+          "payload_bytes": 1056
+        }
+      ]
+    },
+    {
+      "variant": "current",
+      "consumers": 32,
+      "stripes": 2,
+      "mode": "pinned",
+      "iterations": 1000,
+      "wall_us": 206.768707,
+      "cpu_us": 206.279108,
+      "p95_us": 342.951,
+      "payload_bytes": 1056,
+      "runs": [
+        {
+          "variant": "current",
+          "consumers": 32,
+          "stripes": 2,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 206.768707,
+          "cpu_us": 206.279108,
+          "p95_us": 342.951,
+          "payload_bytes": 1056
+        },
+        {
+          "variant": "current",
+          "consumers": 32,
+          "stripes": 2,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 207.728892,
+          "cpu_us": 207.22119899999998,
+          "p95_us": 369.051,
+          "payload_bytes": 1056
+        },
+        {
+          "variant": "current",
+          "consumers": 32,
+          "stripes": 2,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 203.552174,
+          "cpu_us": 203.09887400000002,
+          "p95_us": 251.461,
+          "payload_bytes": 1056
+        }
+      ]
+    },
+    {
+      "variant": "reader_counts",
+      "consumers": 32,
+      "stripes": 2,
+      "mode": "pinned",
+      "iterations": 1000,
+      "wall_us": 153.022652,
+      "cpu_us": 152.675643,
+      "p95_us": 188.321,
+      "payload_bytes": 1056,
+      "runs": [
+        {
+          "variant": "reader_counts",
+          "consumers": 32,
+          "stripes": 2,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 150.33587100000003,
+          "cpu_us": 150.004989,
+          "p95_us": 159.121,
+          "payload_bytes": 1056
+        },
+        {
+          "variant": "reader_counts",
+          "consumers": 32,
+          "stripes": 2,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 168.86039799999998,
+          "cpu_us": 168.41857199999998,
+          "p95_us": 298.901,
+          "payload_bytes": 1056
+        },
+        {
+          "variant": "reader_counts",
+          "consumers": 32,
+          "stripes": 2,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 153.022652,
+          "cpu_us": 152.675643,
+          "p95_us": 188.321,
+          "payload_bytes": 1056
+        }
+      ]
+    },
+    {
+      "variant": "incremental",
+      "consumers": 32,
+      "stripes": 2,
+      "mode": "pinned",
+      "iterations": 1000,
+      "wall_us": 16.647650000000002,
+      "cpu_us": 16.540871,
+      "p95_us": 19.58,
+      "payload_bytes": 1056,
+      "runs": [
+        {
+          "variant": "incremental",
+          "consumers": 32,
+          "stripes": 2,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 16.787181,
+          "cpu_us": 16.669611,
+          "p95_us": 26.41,
+          "payload_bytes": 1056
+        },
+        {
+          "variant": "incremental",
+          "consumers": 32,
+          "stripes": 2,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 16.241429,
+          "cpu_us": 16.135009,
+          "p95_us": 17.91,
+          "payload_bytes": 1056
+        },
+        {
+          "variant": "incremental",
+          "consumers": 32,
+          "stripes": 2,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 16.647650000000002,
+          "cpu_us": 16.540871,
+          "p95_us": 19.58,
+          "payload_bytes": 1056
+        }
+      ]
+    },
+    {
+      "variant": "current",
+      "consumers": 64,
+      "stripes": 2,
+      "mode": "fast",
+      "iterations": 1000,
+      "wall_us": 6800.159025,
+      "cpu_us": 6760.3672209999995,
+      "p95_us": 7480.652,
+      "payload_bytes": 2080,
+      "runs": [
+        {
+          "variant": "current",
+          "consumers": 64,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 6837.2171,
+          "cpu_us": 6796.236332,
+          "p95_us": 7670.132,
+          "payload_bytes": 2080
+        },
+        {
+          "variant": "current",
+          "consumers": 64,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 6800.159025,
+          "cpu_us": 6744.374308,
+          "p95_us": 7136.03,
+          "payload_bytes": 2080
+        },
+        {
+          "variant": "current",
+          "consumers": 64,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 6775.603811,
+          "cpu_us": 6760.3672209999995,
+          "p95_us": 7480.652,
+          "payload_bytes": 2080
+        }
+      ]
+    },
+    {
+      "variant": "reader_counts",
+      "consumers": 64,
+      "stripes": 2,
+      "mode": "fast",
+      "iterations": 1000,
+      "wall_us": 6858.434839,
+      "cpu_us": 6842.712914,
+      "p95_us": 7864.253,
+      "payload_bytes": 2080,
+      "runs": [
+        {
+          "variant": "reader_counts",
+          "consumers": 64,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 7004.6323219999995,
+          "cpu_us": 6988.237611,
+          "p95_us": 8305.805,
+          "payload_bytes": 2080
+        },
+        {
+          "variant": "reader_counts",
+          "consumers": 64,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 6858.434839,
+          "cpu_us": 6842.712914,
+          "p95_us": 7864.253,
+          "payload_bytes": 2080
+        },
+        {
+          "variant": "reader_counts",
+          "consumers": 64,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 6790.513774,
+          "cpu_us": 6775.802401,
+          "p95_us": 7438.041,
+          "payload_bytes": 2080
+        }
+      ]
+    },
+    {
+      "variant": "incremental",
+      "consumers": 64,
+      "stripes": 2,
+      "mode": "fast",
+      "iterations": 1000,
+      "wall_us": 234.72888500000002,
+      "cpu_us": 234.16491399999998,
+      "p95_us": 295.141,
+      "payload_bytes": 2080,
+      "runs": [
+        {
+          "variant": "incremental",
+          "consumers": 64,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 234.72888500000002,
+          "cpu_us": 234.16491399999998,
+          "p95_us": 295.141,
+          "payload_bytes": 2080
+        },
+        {
+          "variant": "incremental",
+          "consumers": 64,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 247.368288,
+          "cpu_us": 246.766502,
+          "p95_us": 416.272,
+          "payload_bytes": 2080
+        },
+        {
+          "variant": "incremental",
+          "consumers": 64,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 232.286075,
+          "cpu_us": 231.72941699999998,
+          "p95_us": 262.581,
+          "payload_bytes": 2080
+        }
+      ]
+    },
+    {
+      "variant": "current",
+      "consumers": 64,
+      "stripes": 2,
+      "mode": "pinned",
+      "iterations": 1000,
+      "wall_us": 481.47659100000004,
+      "cpu_us": 480.363059,
+      "p95_us": 626.233,
+      "payload_bytes": 2080,
+      "runs": [
+        {
+          "variant": "current",
+          "consumers": 64,
+          "stripes": 2,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 481.47659100000004,
+          "cpu_us": 480.363059,
+          "p95_us": 626.233,
+          "payload_bytes": 2080
+        },
+        {
+          "variant": "current",
+          "consumers": 64,
+          "stripes": 2,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 502.158357,
+          "cpu_us": 500.893542,
+          "p95_us": 777.704,
+          "payload_bytes": 2080
+        },
+        {
+          "variant": "current",
+          "consumers": 64,
+          "stripes": 2,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 476.878981,
+          "cpu_us": 475.841909,
+          "p95_us": 532.442,
+          "payload_bytes": 2080
+        }
+      ]
+    },
+    {
+      "variant": "reader_counts",
+      "consumers": 64,
+      "stripes": 2,
+      "mode": "pinned",
+      "iterations": 1000,
+      "wall_us": 285.805419,
+      "cpu_us": 285.21981800000003,
+      "p95_us": 314.412,
+      "payload_bytes": 2080,
+      "runs": [
+        {
+          "variant": "reader_counts",
+          "consumers": 64,
+          "stripes": 2,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 285.805419,
+          "cpu_us": 285.21981800000003,
+          "p95_us": 314.412,
+          "payload_bytes": 2080
+        },
+        {
+          "variant": "reader_counts",
+          "consumers": 64,
+          "stripes": 2,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 283.55408,
+          "cpu_us": 282.966631,
+          "p95_us": 303.751,
+          "payload_bytes": 2080
+        },
+        {
+          "variant": "reader_counts",
+          "consumers": 64,
+          "stripes": 2,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 290.174657,
+          "cpu_us": 289.503174,
+          "p95_us": 315.351,
+          "payload_bytes": 2080
+        }
+      ]
+    },
+    {
+      "variant": "incremental",
+      "consumers": 64,
+      "stripes": 2,
+      "mode": "pinned",
+      "iterations": 1000,
+      "wall_us": 24.806373999999998,
+      "cpu_us": 24.707486,
+      "p95_us": 30.25,
+      "payload_bytes": 2080,
+      "runs": [
+        {
+          "variant": "incremental",
+          "consumers": 64,
+          "stripes": 2,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 25.034785,
+          "cpu_us": 24.942946,
+          "p95_us": 39.32,
+          "payload_bytes": 2080
+        },
+        {
+          "variant": "incremental",
+          "consumers": 64,
+          "stripes": 2,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 24.806373999999998,
+          "cpu_us": 24.707486,
+          "p95_us": 30.25,
+          "payload_bytes": 2080
+        },
+        {
+          "variant": "incremental",
+          "consumers": 64,
+          "stripes": 2,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 24.391222000000003,
+          "cpu_us": 24.190582,
+          "p95_us": 26.43,
+          "payload_bytes": 2080
+        }
+      ]
+    },
+    {
+      "variant": "current",
+      "consumers": 1,
+      "stripes": 4,
+      "mode": "fast",
+      "iterations": 1000,
+      "wall_us": 48.919145,
+      "cpu_us": 48.820025,
+      "p95_us": 52.82,
+      "payload_bytes": 128,
+      "runs": [
+        {
+          "variant": "current",
+          "consumers": 1,
+          "stripes": 4,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 49.145536,
+          "cpu_us": 48.920907,
+          "p95_us": 53.67,
+          "payload_bytes": 128
+        },
+        {
+          "variant": "current",
+          "consumers": 1,
+          "stripes": 4,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 48.797655,
+          "cpu_us": 48.688327,
+          "p95_us": 52.67,
+          "payload_bytes": 128
+        },
+        {
+          "variant": "current",
+          "consumers": 1,
+          "stripes": 4,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 48.919145,
+          "cpu_us": 48.820025,
+          "p95_us": 52.82,
+          "payload_bytes": 128
+        }
+      ]
+    },
+    {
+      "variant": "reader_counts",
+      "consumers": 1,
+      "stripes": 4,
+      "mode": "fast",
+      "iterations": 1000,
+      "wall_us": 48.602284,
+      "cpu_us": 48.506855,
+      "p95_us": 51.8,
+      "payload_bytes": 128,
+      "runs": [
+        {
+          "variant": "reader_counts",
+          "consumers": 1,
+          "stripes": 4,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 48.602284,
+          "cpu_us": 48.506855,
+          "p95_us": 51.8,
+          "payload_bytes": 128
+        },
+        {
+          "variant": "reader_counts",
+          "consumers": 1,
+          "stripes": 4,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 48.481722999999995,
+          "cpu_us": 48.388364,
+          "p95_us": 51.4,
+          "payload_bytes": 128
+        },
+        {
+          "variant": "reader_counts",
+          "consumers": 1,
+          "stripes": 4,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 48.874445,
+          "cpu_us": 48.778635,
+          "p95_us": 52.67,
+          "payload_bytes": 128
+        }
+      ]
+    },
+    {
+      "variant": "incremental",
+      "consumers": 1,
+      "stripes": 4,
+      "mode": "fast",
+      "iterations": 1000,
+      "wall_us": 13.026725,
+      "cpu_us": 13.002004999999999,
+      "p95_us": 13.72,
+      "payload_bytes": 128,
+      "runs": [
+        {
+          "variant": "incremental",
+          "consumers": 1,
+          "stripes": 4,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 13.153925,
+          "cpu_us": 13.122906,
+          "p95_us": 13.72,
+          "payload_bytes": 128
+        },
+        {
+          "variant": "incremental",
+          "consumers": 1,
+          "stripes": 4,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 13.026725,
+          "cpu_us": 13.002004999999999,
+          "p95_us": 13.95,
+          "payload_bytes": 128
+        },
+        {
+          "variant": "incremental",
+          "consumers": 1,
+          "stripes": 4,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 13.010834999999998,
+          "cpu_us": 12.98359,
+          "p95_us": 13.3,
+          "payload_bytes": 128
+        }
+      ]
+    },
+    {
+      "variant": "current",
+      "consumers": 1,
+      "stripes": 4,
+      "mode": "pinned",
+      "iterations": 1000,
+      "wall_us": 51.442026,
+      "cpu_us": 51.32743,
+      "p95_us": 74.21,
+      "payload_bytes": 128,
+      "runs": [
+        {
+          "variant": "current",
+          "consumers": 1,
+          "stripes": 4,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 49.216727,
+          "cpu_us": 49.11492,
+          "p95_us": 53.601,
+          "payload_bytes": 128
+        },
+        {
+          "variant": "current",
+          "consumers": 1,
+          "stripes": 4,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 51.442026,
+          "cpu_us": 51.32743,
+          "p95_us": 74.21,
+          "payload_bytes": 128
+        },
+        {
+          "variant": "current",
+          "consumers": 1,
+          "stripes": 4,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 55.034321000000006,
+          "cpu_us": 54.906256,
+          "p95_us": 81.97,
+          "payload_bytes": 128
+        }
+      ]
+    },
+    {
+      "variant": "reader_counts",
+      "consumers": 1,
+      "stripes": 4,
+      "mode": "pinned",
+      "iterations": 1000,
+      "wall_us": 51.025563999999996,
+      "cpu_us": 50.902138,
+      "p95_us": 70.21,
+      "payload_bytes": 128,
+      "runs": [
+        {
+          "variant": "reader_counts",
+          "consumers": 1,
+          "stripes": 4,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 51.025563999999996,
+          "cpu_us": 50.902138,
+          "p95_us": 71.051,
+          "payload_bytes": 128
+        },
+        {
+          "variant": "reader_counts",
+          "consumers": 1,
+          "stripes": 4,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 51.440066,
+          "cpu_us": 51.320707,
+          "p95_us": 70.21,
+          "payload_bytes": 128
+        },
+        {
+          "variant": "reader_counts",
+          "consumers": 1,
+          "stripes": 4,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 49.206626,
+          "cpu_us": 49.09089,
+          "p95_us": 55.6,
+          "payload_bytes": 128
+        }
+      ]
+    },
+    {
+      "variant": "incremental",
+      "consumers": 1,
+      "stripes": 4,
+      "mode": "pinned",
+      "iterations": 1000,
+      "wall_us": 13.953888000000001,
+      "cpu_us": 13.919120000000001,
+      "p95_us": 18.79,
+      "payload_bytes": 128,
+      "runs": [
+        {
+          "variant": "incremental",
+          "consumers": 1,
+          "stripes": 4,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 14.090389,
+          "cpu_us": 14.04922,
+          "p95_us": 20.11,
+          "payload_bytes": 128
+        },
+        {
+          "variant": "incremental",
+          "consumers": 1,
+          "stripes": 4,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 13.953888000000001,
+          "cpu_us": 13.919120000000001,
+          "p95_us": 18.79,
+          "payload_bytes": 128
+        },
+        {
+          "variant": "incremental",
+          "consumers": 1,
+          "stripes": 4,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 13.059735,
+          "cpu_us": 13.026155000000001,
+          "p95_us": 13.57,
+          "payload_bytes": 128
+        }
+      ]
+    },
+    {
+      "variant": "current",
+      "consumers": 6,
+      "stripes": 4,
+      "mode": "fast",
+      "iterations": 1000,
+      "wall_us": 239.383414,
+      "cpu_us": 238.820808,
+      "p95_us": 376.751,
+      "payload_bytes": 448,
+      "runs": [
+        {
+          "variant": "current",
+          "consumers": 6,
+          "stripes": 4,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 240.87388099999998,
+          "cpu_us": 240.291685,
+          "p95_us": 376.751,
+          "payload_bytes": 448
+        },
+        {
+          "variant": "current",
+          "consumers": 6,
+          "stripes": 4,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 239.383414,
+          "cpu_us": 238.820808,
+          "p95_us": 377.012,
+          "payload_bytes": 448
+        },
+        {
+          "variant": "current",
+          "consumers": 6,
+          "stripes": 4,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 227.26071299999998,
+          "cpu_us": 226.738986,
+          "p95_us": 289.782,
+          "payload_bytes": 448
+        }
+      ]
+    },
+    {
+      "variant": "reader_counts",
+      "consumers": 6,
+      "stripes": 4,
+      "mode": "fast",
+      "iterations": 1000,
+      "wall_us": 230.376687,
+      "cpu_us": 229.794409,
+      "p95_us": 303.591,
+      "payload_bytes": 448,
+      "runs": [
+        {
+          "variant": "reader_counts",
+          "consumers": 6,
+          "stripes": 4,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 227.223283,
+          "cpu_us": 226.68284500000001,
+          "p95_us": 303.591,
+          "payload_bytes": 448
+        },
+        {
+          "variant": "reader_counts",
+          "consumers": 6,
+          "stripes": 4,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 235.332997,
+          "cpu_us": 234.714601,
+          "p95_us": 360.241,
+          "payload_bytes": 448
+        },
+        {
+          "variant": "reader_counts",
+          "consumers": 6,
+          "stripes": 4,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 230.376687,
+          "cpu_us": 229.794409,
+          "p95_us": 297.461,
+          "payload_bytes": 448
+        }
+      ]
+    },
+    {
+      "variant": "incremental",
+      "consumers": 6,
+      "stripes": 4,
+      "mode": "fast",
+      "iterations": 1000,
+      "wall_us": 34.132773,
+      "cpu_us": 34.037457,
+      "p95_us": 44.04,
+      "payload_bytes": 448,
+      "runs": [
+        {
+          "variant": "incremental",
+          "consumers": 6,
+          "stripes": 4,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 34.020493,
+          "cpu_us": 33.900146,
+          "p95_us": 52.96,
+          "payload_bytes": 448
+        },
+        {
+          "variant": "incremental",
+          "consumers": 6,
+          "stripes": 4,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 34.341494,
+          "cpu_us": 34.219465,
+          "p95_us": 44.04,
+          "payload_bytes": 448
+        },
+        {
+          "variant": "incremental",
+          "consumers": 6,
+          "stripes": 4,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 34.132773,
+          "cpu_us": 34.037457,
+          "p95_us": 40.3,
+          "payload_bytes": 448
+        }
+      ]
+    },
+    {
+      "variant": "current",
+      "consumers": 6,
+      "stripes": 4,
+      "mode": "pinned",
+      "iterations": 1000,
+      "wall_us": 99.728069,
+      "cpu_us": 99.508706,
+      "p95_us": 122.351,
+      "payload_bytes": 448,
+      "runs": [
+        {
+          "variant": "current",
+          "consumers": 6,
+          "stripes": 4,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 100.15366,
+          "cpu_us": 99.916697,
+          "p95_us": 136.341,
+          "payload_bytes": 448
+        },
+        {
+          "variant": "current",
+          "consumers": 6,
+          "stripes": 4,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 98.38848200000001,
+          "cpu_us": 98.170661,
+          "p95_us": 111.03,
+          "payload_bytes": 448
+        },
+        {
+          "variant": "current",
+          "consumers": 6,
+          "stripes": 4,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 99.728069,
+          "cpu_us": 99.508706,
+          "p95_us": 122.351,
+          "payload_bytes": 448
+        }
+      ]
+    },
+    {
+      "variant": "reader_counts",
+      "consumers": 6,
+      "stripes": 4,
+      "mode": "pinned",
+      "iterations": 1000,
+      "wall_us": 98.282363,
+      "cpu_us": 98.04003599999999,
+      "p95_us": 143.461,
+      "payload_bytes": 448,
+      "runs": [
+        {
+          "variant": "reader_counts",
+          "consumers": 6,
+          "stripes": 4,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 98.282363,
+          "cpu_us": 98.04003599999999,
+          "p95_us": 127.56,
+          "payload_bytes": 448
+        },
+        {
+          "variant": "reader_counts",
+          "consumers": 6,
+          "stripes": 4,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 100.742562,
+          "cpu_us": 100.44780800000001,
+          "p95_us": 161.331,
+          "payload_bytes": 448
+        },
+        {
+          "variant": "reader_counts",
+          "consumers": 6,
+          "stripes": 4,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 96.86970600000001,
+          "cpu_us": 96.63345100000001,
+          "p95_us": 143.461,
+          "payload_bytes": 448
+        }
+      ]
+    },
+    {
+      "variant": "incremental",
+      "consumers": 6,
+      "stripes": 4,
+      "mode": "pinned",
+      "iterations": 1000,
+      "wall_us": 15.026413,
+      "cpu_us": 14.971493,
+      "p95_us": 20.48,
+      "payload_bytes": 448,
+      "runs": [
+        {
+          "variant": "incremental",
+          "consumers": 6,
+          "stripes": 4,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 14.984833,
+          "cpu_us": 14.919254,
+          "p95_us": 20.48,
+          "payload_bytes": 448
+        },
+        {
+          "variant": "incremental",
+          "consumers": 6,
+          "stripes": 4,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 15.026413,
+          "cpu_us": 14.971493,
+          "p95_us": 19.82,
+          "payload_bytes": 448
+        },
+        {
+          "variant": "incremental",
+          "consumers": 6,
+          "stripes": 4,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 15.507415000000002,
+          "cpu_us": 15.442807,
+          "p95_us": 24.72,
+          "payload_bytes": 448
+        }
+      ]
+    },
+    {
+      "variant": "current",
+      "consumers": 32,
+      "stripes": 4,
+      "mode": "fast",
+      "iterations": 1000,
+      "wall_us": 3141.054111,
+      "cpu_us": 3133.951573,
+      "p95_us": 4031.787,
+      "payload_bytes": 2112,
+      "runs": [
+        {
+          "variant": "current",
+          "consumers": 32,
+          "stripes": 4,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 3170.6608539999997,
+          "cpu_us": 3163.442375,
+          "p95_us": 4031.787,
+          "payload_bytes": 2112
+        },
+        {
+          "variant": "current",
+          "consumers": 32,
+          "stripes": 4,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 3125.0485329999997,
+          "cpu_us": 3118.0228679999996,
+          "p95_us": 3916.977,
+          "payload_bytes": 2112
+        },
+        {
+          "variant": "current",
+          "consumers": 32,
+          "stripes": 4,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 3141.054111,
+          "cpu_us": 3133.951573,
+          "p95_us": 4098.107,
+          "payload_bytes": 2112
+        }
+      ]
+    },
+    {
+      "variant": "reader_counts",
+      "consumers": 32,
+      "stripes": 4,
+      "mode": "fast",
+      "iterations": 1000,
+      "wall_us": 3059.068116,
+      "cpu_us": 3052.386247,
+      "p95_us": 3376.584,
+      "payload_bytes": 2112,
+      "runs": [
+        {
+          "variant": "reader_counts",
+          "consumers": 32,
+          "stripes": 4,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 3115.9913149999998,
+          "cpu_us": 3108.893921,
+          "p95_us": 4059.687,
+          "payload_bytes": 2112
+        },
+        {
+          "variant": "reader_counts",
+          "consumers": 32,
+          "stripes": 4,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 3059.068116,
+          "cpu_us": 3052.386247,
+          "p95_us": 3376.584,
+          "payload_bytes": 2112
+        },
+        {
+          "variant": "reader_counts",
+          "consumers": 32,
+          "stripes": 4,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 3023.966679,
+          "cpu_us": 3017.71716,
+          "p95_us": 3257.913,
+          "payload_bytes": 2112
+        }
+      ]
+    },
+    {
+      "variant": "incremental",
+      "consumers": 32,
+      "stripes": 4,
+      "mode": "fast",
+      "iterations": 1000,
+      "wall_us": 134.33163399999998,
+      "cpu_us": 134.052432,
+      "p95_us": 141.561,
+      "payload_bytes": 2112,
+      "runs": [
+        {
+          "variant": "incremental",
+          "consumers": 32,
+          "stripes": 4,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 132.99784899999997,
+          "cpu_us": 132.727427,
+          "p95_us": 141.561,
+          "payload_bytes": 2112
+        },
+        {
+          "variant": "incremental",
+          "consumers": 32,
+          "stripes": 4,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 134.33163399999998,
+          "cpu_us": 134.052432,
+          "p95_us": 140.851,
+          "payload_bytes": 2112
+        },
+        {
+          "variant": "incremental",
+          "consumers": 32,
+          "stripes": 4,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 134.365533,
+          "cpu_us": 134.090598,
+          "p95_us": 161.941,
+          "payload_bytes": 2112
+        }
+      ]
+    },
+    {
+      "variant": "current",
+      "consumers": 32,
+      "stripes": 4,
+      "mode": "pinned",
+      "iterations": 1000,
+      "wall_us": 374.456501,
+      "cpu_us": 373.652045,
+      "p95_us": 424.022,
+      "payload_bytes": 2112,
+      "runs": [
+        {
+          "variant": "current",
+          "consumers": 32,
+          "stripes": 4,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 379.032461,
+          "cpu_us": 378.22092499999997,
+          "p95_us": 424.022,
+          "payload_bytes": 2112
+        },
+        {
+          "variant": "current",
+          "consumers": 32,
+          "stripes": 4,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 369.878102,
+          "cpu_us": 369.06446500000004,
+          "p95_us": 406.201,
+          "payload_bytes": 2112
+        },
+        {
+          "variant": "current",
+          "consumers": 32,
+          "stripes": 4,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 374.456501,
+          "cpu_us": 373.652045,
+          "p95_us": 424.852,
+          "payload_bytes": 2112
+        }
+      ]
+    },
+    {
+      "variant": "reader_counts",
+      "consumers": 32,
+      "stripes": 4,
+      "mode": "pinned",
+      "iterations": 1000,
+      "wall_us": 329.225501,
+      "cpu_us": 328.503425,
+      "p95_us": 404.631,
+      "payload_bytes": 2112,
+      "runs": [
+        {
+          "variant": "reader_counts",
+          "consumers": 32,
+          "stripes": 4,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 329.225501,
+          "cpu_us": 328.503425,
+          "p95_us": 404.631,
+          "payload_bytes": 2112
+        },
+        {
+          "variant": "reader_counts",
+          "consumers": 32,
+          "stripes": 4,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 339.928776,
+          "cpu_us": 339.132174,
+          "p95_us": 597.743,
+          "payload_bytes": 2112
+        },
+        {
+          "variant": "reader_counts",
+          "consumers": 32,
+          "stripes": 4,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 325.008504,
+          "cpu_us": 324.311053,
+          "p95_us": 373.751,
+          "payload_bytes": 2112
+        }
+      ]
+    },
+    {
+      "variant": "incremental",
+      "consumers": 32,
+      "stripes": 4,
+      "mode": "pinned",
+      "iterations": 1000,
+      "wall_us": 22.053882,
+      "cpu_us": 21.909203,
+      "p95_us": 27.09,
+      "payload_bytes": 2112,
+      "runs": [
+        {
+          "variant": "incremental",
+          "consumers": 32,
+          "stripes": 4,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 22.380664,
+          "cpu_us": 22.210655,
+          "p95_us": 31.41,
+          "payload_bytes": 2112
+        },
+        {
+          "variant": "incremental",
+          "consumers": 32,
+          "stripes": 4,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 22.053882,
+          "cpu_us": 21.909203,
+          "p95_us": 27.09,
+          "payload_bytes": 2112
+        },
+        {
+          "variant": "incremental",
+          "consumers": 32,
+          "stripes": 4,
+          "mode": "pinned",
+          "iterations": 1000,
+          "wall_us": 21.645071,
+          "cpu_us": 21.524791,
+          "p95_us": 24.41,
+          "payload_bytes": 2112
+        }
+      ]
+    },
+    {
+      "variant": "current",
+      "consumers": 64,
+      "stripes": 4,
+      "mode": "fast",
+      "iterations": 300,
+      "wall_us": 10960.753393333332,
+      "cpu_us": 10936.513593333333,
+      "p95_us": 11648.719,
+      "payload_bytes": 4160,
+      "runs": [
+        {
+          "variant": "current",
+          "consumers": 64,
+          "stripes": 4,
+          "mode": "fast",
+          "iterations": 300,
+          "wall_us": 10960.753393333332,
+          "cpu_us": 10936.513593333333,
+          "p95_us": 11648.719,
+          "payload_bytes": 4160
+        },
+        {
+          "variant": "current",
+          "consumers": 64,
+          "stripes": 4,
+          "mode": "fast",
+          "iterations": 300,
+          "wall_us": 10815.338746666666,
+          "cpu_us": 10792.495636666667,
+          "p95_us": 11306.258,
+          "payload_bytes": 4160
+        },
+        {
+          "variant": "current",
+          "consumers": 64,
+          "stripes": 4,
+          "mode": "fast",
+          "iterations": 300,
+          "wall_us": 11188.59915,
+          "cpu_us": 11162.997763333333,
+          "p95_us": 12688.903,
+          "payload_bytes": 4160
+        }
+      ]
+    },
+    {
+      "variant": "reader_counts",
+      "consumers": 64,
+      "stripes": 4,
+      "mode": "fast",
+      "iterations": 300,
+      "wall_us": 11272.229733333332,
+      "cpu_us": 11245.395970000001,
+      "p95_us": 12666.163,
+      "payload_bytes": 4160,
+      "runs": [
+        {
+          "variant": "reader_counts",
+          "consumers": 64,
+          "stripes": 4,
+          "mode": "fast",
+          "iterations": 300,
+          "wall_us": 12324.796083333335,
+          "cpu_us": 12295.322753333334,
+          "p95_us": 14252.45,
+          "payload_bytes": 4160
+        },
+        {
+          "variant": "reader_counts",
+          "consumers": 64,
+          "stripes": 4,
+          "mode": "fast",
+          "iterations": 300,
+          "wall_us": 11272.229733333332,
+          "cpu_us": 11245.395970000001,
+          "p95_us": 12585.852,
+          "payload_bytes": 4160
+        },
+        {
+          "variant": "reader_counts",
+          "consumers": 64,
+          "stripes": 4,
+          "mode": "fast",
+          "iterations": 300,
+          "wall_us": 11084.96975,
+          "cpu_us": 11060.587236666666,
+          "p95_us": 12666.163,
+          "payload_bytes": 4160
+        }
+      ]
+    },
+    {
+      "variant": "incremental",
+      "consumers": 64,
+      "stripes": 4,
+      "mode": "fast",
+      "iterations": 300,
+      "wall_us": 260.61622666666665,
+      "cpu_us": 260.1283066666667,
+      "p95_us": 270.432,
+      "payload_bytes": 4160,
+      "runs": [
+        {
+          "variant": "incremental",
+          "consumers": 64,
+          "stripes": 4,
+          "mode": "fast",
+          "iterations": 300,
+          "wall_us": 267.4257866666667,
+          "cpu_us": 266.9650766666667,
+          "p95_us": 276.641,
+          "payload_bytes": 4160
+        },
+        {
+          "variant": "incremental",
+          "consumers": 64,
+          "stripes": 4,
+          "mode": "fast",
+          "iterations": 300,
+          "wall_us": 260.61622666666665,
+          "cpu_us": 260.1283066666667,
+          "p95_us": 270.432,
+          "payload_bytes": 4160
+        },
+        {
+          "variant": "incremental",
+          "consumers": 64,
+          "stripes": 4,
+          "mode": "fast",
+          "iterations": 300,
+          "wall_us": 260.28416,
+          "cpu_us": 259.75587,
+          "p95_us": 268.161,
+          "payload_bytes": 4160
+        }
+      ]
+    },
+    {
+      "variant": "current",
+      "consumers": 64,
+      "stripes": 4,
+      "mode": "pinned",
+      "iterations": 300,
+      "wall_us": 781.99505,
+      "cpu_us": 780.5765633333333,
+      "p95_us": 788.463,
+      "payload_bytes": 4160,
+      "runs": [
+        {
+          "variant": "current",
+          "consumers": 64,
+          "stripes": 4,
+          "mode": "pinned",
+          "iterations": 300,
+          "wall_us": 788.1661766666666,
+          "cpu_us": 786.7041700000001,
+          "p95_us": 807.484,
+          "payload_bytes": 4160
+        },
+        {
+          "variant": "current",
+          "consumers": 64,
+          "stripes": 4,
+          "mode": "pinned",
+          "iterations": 300,
+          "wall_us": 778.3797633333334,
+          "cpu_us": 776.9824699999999,
+          "p95_us": 787.114,
+          "payload_bytes": 4160
+        },
+        {
+          "variant": "current",
+          "consumers": 64,
+          "stripes": 4,
+          "mode": "pinned",
+          "iterations": 300,
+          "wall_us": 781.99505,
+          "cpu_us": 780.5765633333333,
+          "p95_us": 788.463,
+          "payload_bytes": 4160
+        }
+      ]
+    },
+    {
+      "variant": "reader_counts",
+      "consumers": 64,
+      "stripes": 4,
+      "mode": "pinned",
+      "iterations": 300,
+      "wall_us": 615.8343166666666,
+      "cpu_us": 614.3570633333334,
+      "p95_us": 783.883,
+      "payload_bytes": 4160,
+      "runs": [
+        {
+          "variant": "reader_counts",
+          "consumers": 64,
+          "stripes": 4,
+          "mode": "pinned",
+          "iterations": 300,
+          "wall_us": 615.8343166666666,
+          "cpu_us": 614.3570633333334,
+          "p95_us": 813.573,
+          "payload_bytes": 4160
+        },
+        {
+          "variant": "reader_counts",
+          "consumers": 64,
+          "stripes": 4,
+          "mode": "pinned",
+          "iterations": 300,
+          "wall_us": 620.8519066666667,
+          "cpu_us": 619.44811,
+          "p95_us": 783.883,
+          "payload_bytes": 4160
+        },
+        {
+          "variant": "reader_counts",
+          "consumers": 64,
+          "stripes": 4,
+          "mode": "pinned",
+          "iterations": 300,
+          "wall_us": 611.7497,
+          "cpu_us": 610.3581666666666,
+          "p95_us": 682.653,
+          "payload_bytes": 4160
+        }
+      ]
+    },
+    {
+      "variant": "incremental",
+      "consumers": 64,
+      "stripes": 4,
+      "mode": "pinned",
+      "iterations": 300,
+      "wall_us": 30.434726666666666,
+      "cpu_us": 30.085863333333336,
+      "p95_us": 32.811,
+      "payload_bytes": 4160,
+      "runs": [
+        {
+          "variant": "incremental",
+          "consumers": 64,
+          "stripes": 4,
+          "mode": "pinned",
+          "iterations": 300,
+          "wall_us": 30.289060000000003,
+          "cpu_us": 30.085863333333336,
+          "p95_us": 32.811,
+          "payload_bytes": 4160
+        },
+        {
+          "variant": "incremental",
+          "consumers": 64,
+          "stripes": 4,
+          "mode": "pinned",
+          "iterations": 300,
+          "wall_us": 31.68616666666667,
+          "cpu_us": 31.548366666666666,
+          "p95_us": 33.83,
+          "payload_bytes": 4160
+        },
+        {
+          "variant": "incremental",
+          "consumers": 64,
+          "stripes": 4,
+          "mode": "pinned",
+          "iterations": 300,
+          "wall_us": 30.434726666666666,
+          "cpu_us": 30.06689666666667,
+          "p95_us": 31.88,
+          "payload_bytes": 4160
+        }
+      ]
+    },
+    {
+      "variant": "current",
+      "consumers": 6,
+      "stripes": 2,
+      "mode": "fast",
+      "iterations": 1000,
+      "wall_us": 118.466087,
+      "cpu_us": 118.247179,
+      "p95_us": 122.38,
+      "payload_bytes": 112913304,
+      "runs": [
+        {
+          "variant": "current",
+          "consumers": 6,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 119.875833,
+          "cpu_us": 119.653661,
+          "p95_us": 124.031,
+          "payload_bytes": 112913304
+        },
+        {
+          "variant": "current",
+          "consumers": 6,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 118.41362699999999,
+          "cpu_us": 118.211754,
+          "p95_us": 121.69,
+          "payload_bytes": 112913304
+        },
+        {
+          "variant": "current",
+          "consumers": 6,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 118.466087,
+          "cpu_us": 118.247179,
+          "p95_us": 122.38,
+          "payload_bytes": 112913304
+        }
+      ],
+      "full_image_layout": true
+    },
+    {
+      "variant": "reader_counts",
+      "consumers": 6,
+      "stripes": 2,
+      "mode": "fast",
+      "iterations": 1000,
+      "wall_us": 120.180244,
+      "cpu_us": 119.941069,
+      "p95_us": 125.961,
+      "payload_bytes": 112913304,
+      "runs": [
+        {
+          "variant": "reader_counts",
+          "consumers": 6,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 119.52833100000001,
+          "cpu_us": 119.29840700000001,
+          "p95_us": 125.961,
+          "payload_bytes": 112913304
+        },
+        {
+          "variant": "reader_counts",
+          "consumers": 6,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 120.668346,
+          "cpu_us": 120.387584,
+          "p95_us": 127.251,
+          "payload_bytes": 112913304
+        },
+        {
+          "variant": "reader_counts",
+          "consumers": 6,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 120.180244,
+          "cpu_us": 119.941069,
+          "p95_us": 125.58,
+          "payload_bytes": 112913304
+        }
+      ],
+      "full_image_layout": true
+    },
+    {
+      "variant": "incremental",
+      "consumers": 6,
+      "stripes": 2,
+      "mode": "fast",
+      "iterations": 1000,
+      "wall_us": 25.807098000000003,
+      "cpu_us": 25.73468,
+      "p95_us": 26.961,
+      "payload_bytes": 112913304,
+      "runs": [
+        {
+          "variant": "incremental",
+          "consumers": 6,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 25.807098000000003,
+          "cpu_us": 25.73468,
+          "p95_us": 27.39,
+          "payload_bytes": 112913304
+        },
+        {
+          "variant": "incremental",
+          "consumers": 6,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 25.948438999999997,
+          "cpu_us": 25.885289,
+          "p95_us": 26.761,
+          "payload_bytes": 112913304
+        },
+        {
+          "variant": "incremental",
+          "consumers": 6,
+          "stripes": 2,
+          "mode": "fast",
+          "iterations": 1000,
+          "wall_us": 25.612368,
+          "cpu_us": 25.548527999999997,
+          "p95_us": 26.961,
+          "payload_bytes": 112913304
+        }
+      ],
+      "full_image_layout": true
+    }
+  ],
+  "profiles": [
+    {
+      "variant": "current",
+      "consumers": 6,
+      "stripes": 2,
+      "mode": "fast",
+      "iterations": 500,
+      "wall_us": 494.61501400000003,
+      "cpu_us": 493.368036,
+      "p95_us": 747.973,
+      "payload_bytes": 224,
+      "profile_seconds": 0.24703737500000003,
+      "profile": [
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/tools/benchmark_central_registry.py",
+          "line": 219,
+          "function": "step",
+          "calls": 500,
+          "self_seconds": 0.001861475,
+          "cumulative_seconds": 0.246835974
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method builtins.next>",
+          "calls": 8000,
+          "self_seconds": 0.00189258,
+          "cumulative_seconds": 0.239644093
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/src/core/central_registry.py",
+          "line": 151,
+          "function": "_update_latest",
+          "calls": 7500,
+          "self_seconds": 0.040889715,
+          "cumulative_seconds": 0.20057005800000002
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/src/core/central_registry.py",
+          "line": 207,
+          "function": "lease_slot_for_reading",
+          "calls": 6000,
+          "self_seconds": 0.010051362000000001,
+          "cumulative_seconds": 0.19060204700000002
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/contextlib.py",
+          "line": 132,
+          "function": "__enter__",
+          "calls": 4000,
+          "self_seconds": 0.0008452710000000001,
+          "cumulative_seconds": 0.123775666
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/contextlib.py",
+          "line": 141,
+          "function": "__exit__",
+          "calls": 4000,
+          "self_seconds": 0.0009379210000000001,
+          "cumulative_seconds": 0.11765161900000001
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method builtins.max>",
+          "calls": 22500,
+          "self_seconds": 0.016025617000000002,
+          "cumulative_seconds": 0.058791180000000005
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/tools/benchmark_central_registry.py",
+          "line": 197,
+          "function": "publish",
+          "calls": 500,
+          "self_seconds": 0.000843196,
+          "cumulative_seconds": 0.049760397000000005
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 341,
+          "function": "set",
+          "calls": 21000,
+          "self_seconds": 0.013427929000000002,
+          "cumulative_seconds": 0.049658908
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/src/core/central_registry.py",
+          "line": 173,
+          "function": "lease_slot_for_writing",
+          "calls": 2000,
+          "self_seconds": 0.0021164540000000003,
+          "cumulative_seconds": 0.047149466
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/src/core/central_registry.py",
+          "line": 158,
+          "function": "<genexpr>",
+          "calls": 177500,
+          "self_seconds": 0.023886128000000003,
+          "cumulative_seconds": 0.042765563
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 347,
+          "function": "clear",
+          "calls": 27000,
+          "self_seconds": 0.011141678,
+          "cumulative_seconds": 0.033032465000000004
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'issubset' of 'frozenset' objects>",
+          "calls": 201000,
+          "self_seconds": 0.025540104,
+          "cumulative_seconds": 0.025540104
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 239,
+          "function": "__exit__",
+          "calls": 54000,
+          "self_seconds": 0.010181252,
+          "cumulative_seconds": 0.020760511000000002
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 236,
+          "function": "__enter__",
+          "calls": 54000,
+          "self_seconds": 0.007575877000000001,
+          "cumulative_seconds": 0.019334668000000003
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 303,
+          "function": "notify_all",
+          "calls": 21000,
+          "self_seconds": 0.004011321,
+          "cumulative_seconds": 0.017971983
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 277,
+          "function": "notify",
+          "calls": 21000,
+          "self_seconds": 0.008610638,
+          "cumulative_seconds": 0.013960662
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 94,
+          "function": "__enter__",
+          "calls": 54000,
+          "self_seconds": 0.007377047,
+          "cumulative_seconds": 0.011758791000000001
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 97,
+          "function": "__exit__",
+          "calls": 54000,
+          "self_seconds": 0.007597595,
+          "cumulative_seconds": 0.010579259
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'acquire' of '_multiprocessing.SemLock' objects>",
+          "calls": 129000,
+          "self_seconds": 0.007954507000000001,
+          "cumulative_seconds": 0.007954507000000001
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'update' of 'set' objects>",
+          "calls": 7500,
+          "self_seconds": 0.0033164080000000003,
+          "cumulative_seconds": 0.006113022
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 351,
+          "function": "wait",
+          "calls": 3000,
+          "self_seconds": 0.002295408,
+          "cumulative_seconds": 0.005375121
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/src/core/central_registry.py",
+          "line": 116,
+          "function": "_evict",
+          "calls": 1000,
+          "self_seconds": 0.002838596,
+          "cumulative_seconds": 0.0046964730000000005
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'get' of 'dict' objects>",
+          "calls": 47500,
+          "self_seconds": 0.004491621,
+          "cumulative_seconds": 0.004491621
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method '__enter__' of '_multiprocessing.SemLock' objects>",
+          "calls": 54000,
+          "self_seconds": 0.004381744,
+          "cumulative_seconds": 0.004381744
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 334,
+          "function": "is_set",
+          "calls": 3000,
+          "self_seconds": 0.001544316,
+          "cumulative_seconds": 0.004089624
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'items' of 'dict' objects>",
+          "calls": 46000,
+          "self_seconds": 0.0040406850000000005,
+          "cumulative_seconds": 0.0040406850000000005
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method '__exit__' of '_multiprocessing.SemLock' objects>",
+          "calls": 54000,
+          "self_seconds": 0.002981664,
+          "cumulative_seconds": 0.002981664
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/src/core/central_registry.py",
+          "line": 155,
+          "function": "<genexpr>",
+          "calls": 22500,
+          "self_seconds": 0.0027966140000000002,
+          "cumulative_seconds": 0.0027966140000000002
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'release' of '_multiprocessing.SemLock' objects>",
+          "calls": 39000,
+          "self_seconds": 0.002663679,
+          "cumulative_seconds": 0.002663679
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/contextlib.py",
+          "line": 299,
+          "function": "helper",
+          "calls": 4000,
+          "self_seconds": 0.001014284,
+          "cumulative_seconds": 0.002521877
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/src/core/central_registry.py",
+          "line": 143,
+          "function": "_new_entry",
+          "calls": 500,
+          "self_seconds": 0.00025408,
+          "cumulative_seconds": 0.002311388
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/src/core/central_registry.py",
+          "line": 55,
+          "function": "slot_view",
+          "calls": 7000,
+          "self_seconds": 0.001486275,
+          "cumulative_seconds": 0.0020012800000000002
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method '_is_mine' of '_multiprocessing.SemLock' objects>",
+          "calls": 21000,
+          "self_seconds": 0.001807248,
+          "cumulative_seconds": 0.001807248
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/contextlib.py",
+          "line": 104,
+          "function": "__init__",
+          "calls": 4000,
+          "self_seconds": 0.001132903,
+          "cumulative_seconds": 0.001507593
+        }
+      ]
+    },
+    {
+      "variant": "reader_counts",
+      "consumers": 6,
+      "stripes": 2,
+      "mode": "fast",
+      "iterations": 500,
+      "wall_us": 498.10639000000003,
+      "cpu_us": 496.797922,
+      "p95_us": 736.843,
+      "payload_bytes": 224,
+      "profile_seconds": 0.248779646,
+      "profile": [
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/tools/benchmark_central_registry.py",
+          "line": 219,
+          "function": "step",
+          "calls": 500,
+          "self_seconds": 0.0019358040000000002,
+          "cumulative_seconds": 0.24857229400000003
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method builtins.next>",
+          "calls": 8000,
+          "self_seconds": 0.001928585,
+          "cumulative_seconds": 0.240988044
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/src/core/central_registry.py",
+          "line": 151,
+          "function": "_update_latest",
+          "calls": 7500,
+          "self_seconds": 0.041796804,
+          "cumulative_seconds": 0.20270469300000002
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/tools/benchmark_central_registry.py",
+          "line": 67,
+          "function": "lease_slot_for_reading",
+          "calls": 6000,
+          "self_seconds": 0.009686713000000001,
+          "cumulative_seconds": 0.19356033
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/contextlib.py",
+          "line": 132,
+          "function": "__enter__",
+          "calls": 4000,
+          "self_seconds": 0.000864831,
+          "cumulative_seconds": 0.124803777
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/contextlib.py",
+          "line": 141,
+          "function": "__exit__",
+          "calls": 4000,
+          "self_seconds": 0.000958162,
+          "cumulative_seconds": 0.11800726
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/tools/benchmark_central_registry.py",
+          "line": 58,
+          "function": "_before_read",
+          "calls": 3000,
+          "self_seconds": 0.0007448330000000001,
+          "cumulative_seconds": 0.084281375
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/tools/benchmark_central_registry.py",
+          "line": 61,
+          "function": "_after_read",
+          "calls": 3000,
+          "self_seconds": 0.0007474710000000001,
+          "cumulative_seconds": 0.080924917
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method builtins.max>",
+          "calls": 22500,
+          "self_seconds": 0.016273883,
+          "cumulative_seconds": 0.059601818
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 341,
+          "function": "set",
+          "calls": 21000,
+          "self_seconds": 0.01334475,
+          "cumulative_seconds": 0.049575703000000006
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/tools/benchmark_central_registry.py",
+          "line": 197,
+          "function": "publish",
+          "calls": 500,
+          "self_seconds": 0.0008620650000000001,
+          "cumulative_seconds": 0.048149311
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/src/core/central_registry.py",
+          "line": 173,
+          "function": "lease_slot_for_writing",
+          "calls": 2000,
+          "self_seconds": 0.002181979,
+          "cumulative_seconds": 0.045499129000000006
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/src/core/central_registry.py",
+          "line": 158,
+          "function": "<genexpr>",
+          "calls": 177500,
+          "self_seconds": 0.024167519000000002,
+          "cumulative_seconds": 0.043327935000000005
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 347,
+          "function": "clear",
+          "calls": 27000,
+          "self_seconds": 0.011175558,
+          "cumulative_seconds": 0.033270177000000005
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'issubset' of 'frozenset' objects>",
+          "calls": 201000,
+          "self_seconds": 0.025936360000000002,
+          "cumulative_seconds": 0.025936360000000002
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 239,
+          "function": "__exit__",
+          "calls": 54000,
+          "self_seconds": 0.010384758000000001,
+          "cumulative_seconds": 0.021059162000000003
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 236,
+          "function": "__enter__",
+          "calls": 54000,
+          "self_seconds": 0.007742828,
+          "cumulative_seconds": 0.019641152000000002
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 303,
+          "function": "notify_all",
+          "calls": 21000,
+          "self_seconds": 0.0038893160000000003,
+          "cumulative_seconds": 0.017838069
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 277,
+          "function": "notify",
+          "calls": 21000,
+          "self_seconds": 0.008560257,
+          "cumulative_seconds": 0.013948753000000001
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 94,
+          "function": "__enter__",
+          "calls": 54000,
+          "self_seconds": 0.007440611000000001,
+          "cumulative_seconds": 0.011898324
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 97,
+          "function": "__exit__",
+          "calls": 54000,
+          "self_seconds": 0.007637042,
+          "cumulative_seconds": 0.010674404
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'acquire' of '_multiprocessing.SemLock' objects>",
+          "calls": 120000,
+          "self_seconds": 0.007257004,
+          "cumulative_seconds": 0.007257004
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'update' of 'set' objects>",
+          "calls": 7500,
+          "self_seconds": 0.003292811,
+          "cumulative_seconds": 0.006075525
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 351,
+          "function": "wait",
+          "calls": 3000,
+          "self_seconds": 0.0023115510000000002,
+          "cumulative_seconds": 0.005529356
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'get' of 'dict' objects>",
+          "calls": 47500,
+          "self_seconds": 0.004684808,
+          "cumulative_seconds": 0.004684808
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method '__enter__' of '_multiprocessing.SemLock' objects>",
+          "calls": 54000,
+          "self_seconds": 0.004457713,
+          "cumulative_seconds": 0.004457713
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 334,
+          "function": "is_set",
+          "calls": 3000,
+          "self_seconds": 0.001625577,
+          "cumulative_seconds": 0.004362779000000001
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'items' of 'dict' objects>",
+          "calls": 46000,
+          "self_seconds": 0.004155776,
+          "cumulative_seconds": 0.004155776
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method '__exit__' of '_multiprocessing.SemLock' objects>",
+          "calls": 54000,
+          "self_seconds": 0.003037362,
+          "cumulative_seconds": 0.003037362
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/src/core/central_registry.py",
+          "line": 155,
+          "function": "<genexpr>",
+          "calls": 22500,
+          "self_seconds": 0.0027827140000000004,
+          "cumulative_seconds": 0.0027827140000000004
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/contextlib.py",
+          "line": 299,
+          "function": "helper",
+          "calls": 4000,
+          "self_seconds": 0.001027864,
+          "cumulative_seconds": 0.002775286
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/tools/benchmark_central_registry.py",
+          "line": 43,
+          "function": "_evict",
+          "calls": 1000,
+          "self_seconds": 0.0014634700000000001,
+          "cumulative_seconds": 0.002405756
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/src/core/central_registry.py",
+          "line": 55,
+          "function": "slot_view",
+          "calls": 7000,
+          "self_seconds": 0.001518087,
+          "cumulative_seconds": 0.002053669
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'release' of '_multiprocessing.SemLock' objects>",
+          "calls": 30000,
+          "self_seconds": 0.0020532280000000003,
+          "cumulative_seconds": 0.0020532280000000003
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method '_is_mine' of '_multiprocessing.SemLock' objects>",
+          "calls": 21000,
+          "self_seconds": 0.00182046,
+          "cumulative_seconds": 0.00182046
+        }
+      ]
+    },
+    {
+      "variant": "incremental",
+      "consumers": 6,
+      "stripes": 2,
+      "mode": "fast",
+      "iterations": 500,
+      "wall_us": 118.427136,
+      "cpu_us": 117.936244,
+      "p95_us": 170.291,
+      "payload_bytes": 224,
+      "profile_seconds": 0.05896177700000002,
+      "profile": [
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/tools/benchmark_central_registry.py",
+          "line": 219,
+          "function": "step",
+          "calls": 500,
+          "self_seconds": 0.0017897170000000001,
+          "cumulative_seconds": 0.058779837
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method builtins.next>",
+          "calls": 8000,
+          "self_seconds": 0.0018179270000000002,
+          "cumulative_seconds": 0.051548224000000004
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/tools/benchmark_central_registry.py",
+          "line": 67,
+          "function": "lease_slot_for_reading",
+          "calls": 6000,
+          "self_seconds": 0.009315661000000001,
+          "cumulative_seconds": 0.031146728000000002
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/contextlib.py",
+          "line": 132,
+          "function": "__enter__",
+          "calls": 4000,
+          "self_seconds": 0.000812003,
+          "cumulative_seconds": 0.029778051000000003
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/contextlib.py",
+          "line": 141,
+          "function": "__exit__",
+          "calls": 4000,
+          "self_seconds": 0.0008956550000000001,
+          "cumulative_seconds": 0.023477831
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/tools/benchmark_central_registry.py",
+          "line": 197,
+          "function": "publish",
+          "calls": 500,
+          "self_seconds": 0.000869375,
+          "cumulative_seconds": 0.021191784
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/tools/benchmark_central_registry.py",
+          "line": 152,
+          "function": "lease_slot_for_writing",
+          "calls": 2000,
+          "self_seconds": 0.002937218,
+          "cumulative_seconds": 0.018583569
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/tools/benchmark_central_registry.py",
+          "line": 124,
+          "function": "_signal",
+          "calls": 6000,
+          "self_seconds": 0.0030141540000000002,
+          "cumulative_seconds": 0.012172629
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 341,
+          "function": "set",
+          "calls": 3000,
+          "self_seconds": 0.002101748,
+          "cumulative_seconds": 0.007814894000000001
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 351,
+          "function": "wait",
+          "calls": 3000,
+          "self_seconds": 0.002320209,
+          "cumulative_seconds": 0.005612792
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 239,
+          "function": "__exit__",
+          "calls": 12000,
+          "self_seconds": 0.002499273,
+          "cumulative_seconds": 0.004982121
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 236,
+          "function": "__enter__",
+          "calls": 12000,
+          "self_seconds": 0.001824356,
+          "cumulative_seconds": 0.004619393
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 334,
+          "function": "is_set",
+          "calls": 3000,
+          "self_seconds": 0.0015794140000000001,
+          "cumulative_seconds": 0.004278802
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 347,
+          "function": "clear",
+          "calls": 3000,
+          "self_seconds": 0.001345257,
+          "cumulative_seconds": 0.003922264
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 303,
+          "function": "notify_all",
+          "calls": 3000,
+          "self_seconds": 0.000623274,
+          "cumulative_seconds": 0.002841877
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 94,
+          "function": "__enter__",
+          "calls": 12000,
+          "self_seconds": 0.0017676550000000001,
+          "cumulative_seconds": 0.002795037
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/contextlib.py",
+          "line": 299,
+          "function": "helper",
+          "calls": 4000,
+          "self_seconds": 0.0010185860000000001,
+          "cumulative_seconds": 0.0027010930000000003
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/tools/benchmark_central_registry.py",
+          "line": 43,
+          "function": "_evict",
+          "calls": 1000,
+          "self_seconds": 0.0014383540000000002,
+          "cumulative_seconds": 0.00268754
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 97,
+          "function": "__exit__",
+          "calls": 12000,
+          "self_seconds": 0.0017976840000000001,
+          "cumulative_seconds": 0.002482848
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 277,
+          "function": "notify",
+          "calls": 3000,
+          "self_seconds": 0.001351165,
+          "cumulative_seconds": 0.002218603
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/tools/benchmark_central_registry.py",
+          "line": 146,
+          "function": "_after_read",
+          "calls": 3000,
+          "self_seconds": 0.0005945740000000001,
+          "cumulative_seconds": 0.0021920190000000003
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/src/core/central_registry.py",
+          "line": 55,
+          "function": "slot_view",
+          "calls": 7000,
+          "self_seconds": 0.0014887860000000002,
+          "cumulative_seconds": 0.0019838060000000003
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/contextlib.py",
+          "line": 104,
+          "function": "__init__",
+          "calls": 4000,
+          "self_seconds": 0.0013449550000000001,
+          "cumulative_seconds": 0.0016825070000000002
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'acquire' of '_multiprocessing.SemLock' objects>",
+          "calls": 24000,
+          "self_seconds": 0.001594937,
+          "cumulative_seconds": 0.001594937
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'issubset' of 'frozenset' objects>",
+          "calls": 8000,
+          "self_seconds": 0.001384052,
+          "cumulative_seconds": 0.001384052
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/src/core/central_registry.py",
+          "line": 143,
+          "function": "_new_entry",
+          "calls": 500,
+          "self_seconds": 0.000240241,
+          "cumulative_seconds": 0.0013087770000000001
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method '__enter__' of '_multiprocessing.SemLock' objects>",
+          "calls": 12000,
+          "self_seconds": 0.001027382,
+          "cumulative_seconds": 0.001027382
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/tools/benchmark_central_registry.py",
+          "line": 149,
+          "function": "_read_started",
+          "calls": 3000,
+          "self_seconds": 0.0005819730000000001,
+          "cumulative_seconds": 0.0010254230000000001
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/src/core/central_registry.py",
+          "line": 20,
+          "function": "_primitives",
+          "calls": 3000,
+          "self_seconds": 0.000628132,
+          "cumulative_seconds": 0.0008961030000000001
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'release' of '_multiprocessing.SemLock' objects>",
+          "calls": 12000,
+          "self_seconds": 0.0008428110000000001,
+          "cumulative_seconds": 0.0008428110000000001
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/src/core/central_registry.py",
+          "line": 44,
+          "function": "reserve_slot",
+          "calls": 1500,
+          "self_seconds": 0.00039844,
+          "cumulative_seconds": 0.0008039820000000001
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method '__exit__' of '_thread.RLock' objects>",
+          "calls": 8000,
+          "self_seconds": 0.000755683,
+          "cumulative_seconds": 0.000755683
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method '__exit__' of '_multiprocessing.SemLock' objects>",
+          "calls": 12000,
+          "self_seconds": 0.000685164,
+          "cumulative_seconds": 0.000685164
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'toreadonly' of 'memoryview' objects>",
+          "calls": 6000,
+          "self_seconds": 0.0006469550000000001,
+          "cumulative_seconds": 0.0006469550000000001
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'release' of 'memoryview' objects>",
+          "calls": 7000,
+          "self_seconds": 0.000597533,
+          "cumulative_seconds": 0.000597533
+        }
+      ]
+    },
+    {
+      "variant": "current",
+      "consumers": 6,
+      "stripes": 2,
+      "mode": "pinned",
+      "iterations": 500,
+      "wall_us": 199.932358,
+      "cpu_us": 199.363734,
+      "p95_us": 313.131,
+      "payload_bytes": 224,
+      "profile_seconds": 0.09971377900000002,
+      "profile": [
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/tools/benchmark_central_registry.py",
+          "line": 219,
+          "function": "step",
+          "calls": 500,
+          "self_seconds": 0.00044670100000000003,
+          "cumulative_seconds": 0.099529166
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method builtins.next>",
+          "calls": 3000,
+          "self_seconds": 0.000726064,
+          "cumulative_seconds": 0.09637453600000001
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/src/core/central_registry.py",
+          "line": 151,
+          "function": "_update_latest",
+          "calls": 2500,
+          "self_seconds": 0.014317492000000001,
+          "cumulative_seconds": 0.07725522600000001
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/tools/benchmark_central_registry.py",
+          "line": 197,
+          "function": "publish",
+          "calls": 500,
+          "self_seconds": 0.000845192,
+          "cumulative_seconds": 0.062149153000000006
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/src/core/central_registry.py",
+          "line": 173,
+          "function": "lease_slot_for_writing",
+          "calls": 2000,
+          "self_seconds": 0.002101686,
+          "cumulative_seconds": 0.059553054
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/contextlib.py",
+          "line": 141,
+          "function": "__exit__",
+          "calls": 1500,
+          "self_seconds": 0.000367323,
+          "cumulative_seconds": 0.052289708000000004
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/contextlib.py",
+          "line": 132,
+          "function": "__enter__",
+          "calls": 1500,
+          "self_seconds": 0.000345442,
+          "cumulative_seconds": 0.044797593000000004
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/src/core/central_registry.py",
+          "line": 207,
+          "function": "lease_slot_for_reading",
+          "calls": 1000,
+          "self_seconds": 0.001802676,
+          "cumulative_seconds": 0.036095418000000004
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 341,
+          "function": "set",
+          "calls": 13500,
+          "self_seconds": 0.008703007,
+          "cumulative_seconds": 0.032732255
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method builtins.max>",
+          "calls": 7500,
+          "self_seconds": 0.005598367,
+          "cumulative_seconds": 0.020525239
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/src/core/central_registry.py",
+          "line": 158,
+          "function": "<genexpr>",
+          "calls": 57500,
+          "self_seconds": 0.008286578000000001,
+          "cumulative_seconds": 0.014926872
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 303,
+          "function": "notify_all",
+          "calls": 13500,
+          "self_seconds": 0.0024967780000000003,
+          "cumulative_seconds": 0.011482293000000001
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/src/core/central_registry.py",
+          "line": 116,
+          "function": "_evict",
+          "calls": 1000,
+          "self_seconds": 0.005695182,
+          "cumulative_seconds": 0.009438515
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'issubset' of 'frozenset' objects>",
+          "calls": 66000,
+          "self_seconds": 0.00914212,
+          "cumulative_seconds": 0.00914212
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 277,
+          "function": "notify",
+          "calls": 13500,
+          "self_seconds": 0.0055088030000000005,
+          "cumulative_seconds": 0.008985515000000001
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 239,
+          "function": "__exit__",
+          "calls": 16500,
+          "self_seconds": 0.003285969,
+          "cumulative_seconds": 0.0066622700000000005
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 236,
+          "function": "__enter__",
+          "calls": 16500,
+          "self_seconds": 0.002508244,
+          "cumulative_seconds": 0.006346457000000001
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'acquire' of '_multiprocessing.SemLock' objects>",
+          "calls": 79000,
+          "self_seconds": 0.0049714550000000005,
+          "cumulative_seconds": 0.0049714550000000005
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 94,
+          "function": "__enter__",
+          "calls": 16500,
+          "self_seconds": 0.002389738,
+          "cumulative_seconds": 0.003838213
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 97,
+          "function": "__exit__",
+          "calls": 16500,
+          "self_seconds": 0.0024335750000000003,
+          "cumulative_seconds": 0.0033763010000000004
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 347,
+          "function": "clear",
+          "calls": 2000,
+          "self_seconds": 0.000878802,
+          "cumulative_seconds": 0.00251395
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/src/core/central_registry.py",
+          "line": 143,
+          "function": "_new_entry",
+          "calls": 500,
+          "self_seconds": 0.00023353000000000002,
+          "cumulative_seconds": 0.00220081
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'update' of 'set' objects>",
+          "calls": 2500,
+          "self_seconds": 0.001197614,
+          "cumulative_seconds": 0.002195831
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'release' of '_multiprocessing.SemLock' objects>",
+          "calls": 34000,
+          "self_seconds": 0.002149359,
+          "cumulative_seconds": 0.002149359
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'get' of 'dict' objects>",
+          "calls": 20000,
+          "self_seconds": 0.0019292920000000002,
+          "cumulative_seconds": 0.0019292920000000002
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'items' of 'dict' objects>",
+          "calls": 16000,
+          "self_seconds": 0.0014552830000000001,
+          "cumulative_seconds": 0.0014552830000000001
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method '__enter__' of '_multiprocessing.SemLock' objects>",
+          "calls": 16500,
+          "self_seconds": 0.001448475,
+          "cumulative_seconds": 0.001448475
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method '_is_mine' of '_multiprocessing.SemLock' objects>",
+          "calls": 13500,
+          "self_seconds": 0.001151466,
+          "cumulative_seconds": 0.001151466
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/src/core/central_registry.py",
+          "line": 155,
+          "function": "<genexpr>",
+          "calls": 7500,
+          "self_seconds": 0.000998217,
+          "cumulative_seconds": 0.000998217
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/contextlib.py",
+          "line": 299,
+          "function": "helper",
+          "calls": 1500,
+          "self_seconds": 0.00039310100000000003,
+          "cumulative_seconds": 0.0009887420000000001
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method '__exit__' of '_multiprocessing.SemLock' objects>",
+          "calls": 16500,
+          "self_seconds": 0.0009427260000000001,
+          "cumulative_seconds": 0.0009427260000000001
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 351,
+          "function": "wait",
+          "calls": 500,
+          "self_seconds": 0.00039122100000000003,
+          "cumulative_seconds": 0.000924023
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/src/core/central_registry.py",
+          "line": 44,
+          "function": "reserve_slot",
+          "calls": 1500,
+          "self_seconds": 0.00038633300000000004,
+          "cumulative_seconds": 0.000801864
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 334,
+          "function": "is_set",
+          "calls": 500,
+          "self_seconds": 0.000263081,
+          "cumulative_seconds": 0.0006944830000000001
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/src/core/central_registry.py",
+          "line": 55,
+          "function": "slot_view",
+          "calls": 2000,
+          "self_seconds": 0.00045253100000000005,
+          "cumulative_seconds": 0.000610071
+        }
+      ]
+    },
+    {
+      "variant": "reader_counts",
+      "consumers": 6,
+      "stripes": 2,
+      "mode": "pinned",
+      "iterations": 500,
+      "wall_us": 178.093228,
+      "cpu_us": 177.594636,
+      "p95_us": 227.531,
+      "payload_bytes": 224,
+      "profile_seconds": 0.088812203,
+      "profile": [
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/tools/benchmark_central_registry.py",
+          "line": 219,
+          "function": "step",
+          "calls": 500,
+          "self_seconds": 0.000409,
+          "cumulative_seconds": 0.08863525200000001
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method builtins.next>",
+          "calls": 3000,
+          "self_seconds": 0.000705463,
+          "cumulative_seconds": 0.085624531
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/src/core/central_registry.py",
+          "line": 151,
+          "function": "_update_latest",
+          "calls": 2500,
+          "self_seconds": 0.013680254000000001,
+          "cumulative_seconds": 0.07329730100000001
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/tools/benchmark_central_registry.py",
+          "line": 197,
+          "function": "publish",
+          "calls": 500,
+          "self_seconds": 0.000785802,
+          "cumulative_seconds": 0.052796081
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/src/core/central_registry.py",
+          "line": 173,
+          "function": "lease_slot_for_writing",
+          "calls": 2000,
+          "self_seconds": 0.002022369,
+          "cumulative_seconds": 0.05034069
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/contextlib.py",
+          "line": 141,
+          "function": "__exit__",
+          "calls": 1500,
+          "self_seconds": 0.00034799,
+          "cumulative_seconds": 0.048698580000000005
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/contextlib.py",
+          "line": 132,
+          "function": "__enter__",
+          "calls": 1500,
+          "self_seconds": 0.000312972,
+          "cumulative_seconds": 0.037586913
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/tools/benchmark_central_registry.py",
+          "line": 67,
+          "function": "lease_slot_for_reading",
+          "calls": 1000,
+          "self_seconds": 0.001648216,
+          "cumulative_seconds": 0.034578378
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 341,
+          "function": "set",
+          "calls": 13500,
+          "self_seconds": 0.008397670000000001,
+          "cumulative_seconds": 0.031093896000000003
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method builtins.max>",
+          "calls": 7500,
+          "self_seconds": 0.005279455000000001,
+          "cumulative_seconds": 0.019329229
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/tools/benchmark_central_registry.py",
+          "line": 58,
+          "function": "_before_read",
+          "calls": 500,
+          "self_seconds": 0.00013319000000000002,
+          "cumulative_seconds": 0.015135585000000002
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/tools/benchmark_central_registry.py",
+          "line": 61,
+          "function": "_after_read",
+          "calls": 500,
+          "self_seconds": 0.00013235000000000002,
+          "cumulative_seconds": 0.014628607
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/src/core/central_registry.py",
+          "line": 158,
+          "function": "<genexpr>",
+          "calls": 57500,
+          "self_seconds": 0.007937254000000001,
+          "cumulative_seconds": 0.014049774000000001
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 303,
+          "function": "notify_all",
+          "calls": 13500,
+          "self_seconds": 0.002352106,
+          "cumulative_seconds": 0.010819239000000001
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 277,
+          "function": "notify",
+          "calls": 13500,
+          "self_seconds": 0.005246747,
+          "cumulative_seconds": 0.008467133
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'issubset' of 'frozenset' objects>",
+          "calls": 66000,
+          "self_seconds": 0.008378643,
+          "cumulative_seconds": 0.008378643
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 239,
+          "function": "__exit__",
+          "calls": 16500,
+          "self_seconds": 0.0031408430000000004,
+          "cumulative_seconds": 0.0063589860000000005
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 236,
+          "function": "__enter__",
+          "calls": 16500,
+          "self_seconds": 0.002341048,
+          "cumulative_seconds": 0.006027679
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 94,
+          "function": "__enter__",
+          "calls": 16500,
+          "self_seconds": 0.002339643,
+          "cumulative_seconds": 0.003686631
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'acquire' of '_multiprocessing.SemLock' objects>",
+          "calls": 57500,
+          "self_seconds": 0.00325506,
+          "cumulative_seconds": 0.00325506
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 97,
+          "function": "__exit__",
+          "calls": 16500,
+          "self_seconds": 0.002317642,
+          "cumulative_seconds": 0.003218143
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/tools/benchmark_central_registry.py",
+          "line": 43,
+          "function": "_evict",
+          "calls": 1000,
+          "self_seconds": 0.00167423,
+          "cumulative_seconds": 0.0027082340000000003
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 347,
+          "function": "clear",
+          "calls": 2000,
+          "self_seconds": 0.0008512620000000001,
+          "cumulative_seconds": 0.002423604
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'update' of 'set' objects>",
+          "calls": 2500,
+          "self_seconds": 0.001076221,
+          "cumulative_seconds": 0.0019819250000000003
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'get' of 'dict' objects>",
+          "calls": 20000,
+          "self_seconds": 0.0018910770000000001,
+          "cumulative_seconds": 0.0018910770000000001
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'items' of 'dict' objects>",
+          "calls": 16000,
+          "self_seconds": 0.0014793450000000002,
+          "cumulative_seconds": 0.0014793450000000002
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method '__enter__' of '_multiprocessing.SemLock' objects>",
+          "calls": 16500,
+          "self_seconds": 0.0013469880000000001,
+          "cumulative_seconds": 0.0013469880000000001
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/src/core/central_registry.py",
+          "line": 143,
+          "function": "_new_entry",
+          "calls": 500,
+          "self_seconds": 0.000220811,
+          "cumulative_seconds": 0.0010823060000000001
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method '_is_mine' of '_multiprocessing.SemLock' objects>",
+          "calls": 13500,
+          "self_seconds": 0.0010390870000000002,
+          "cumulative_seconds": 0.0010390870000000002
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/contextlib.py",
+          "line": 299,
+          "function": "helper",
+          "calls": 1500,
+          "self_seconds": 0.000376171,
+          "cumulative_seconds": 0.000995826
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'release' of '_multiprocessing.SemLock' objects>",
+          "calls": 15000,
+          "self_seconds": 0.000982206,
+          "cumulative_seconds": 0.000982206
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 351,
+          "function": "wait",
+          "calls": 500,
+          "self_seconds": 0.000407241,
+          "cumulative_seconds": 0.0009457640000000001
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/src/core/central_registry.py",
+          "line": 155,
+          "function": "<genexpr>",
+          "calls": 7500,
+          "self_seconds": 0.000905704,
+          "cumulative_seconds": 0.000905704
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method '__exit__' of '_multiprocessing.SemLock' objects>",
+          "calls": 16500,
+          "self_seconds": 0.0009005010000000001,
+          "cumulative_seconds": 0.0009005010000000001
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/src/core/central_registry.py",
+          "line": 44,
+          "function": "reserve_slot",
+          "calls": 1500,
+          "self_seconds": 0.000378323,
+          "cumulative_seconds": 0.000792715
+        }
+      ]
+    },
+    {
+      "variant": "incremental",
+      "consumers": 6,
+      "stripes": 2,
+      "mode": "pinned",
+      "iterations": 500,
+      "wall_us": 39.187163999999996,
+      "cpu_us": 39.047025999999995,
+      "p95_us": 53.85,
+      "payload_bytes": 224,
+      "profile_seconds": 0.019382460000000008,
+      "profile": [
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/tools/benchmark_central_registry.py",
+          "line": 219,
+          "function": "step",
+          "calls": 500,
+          "self_seconds": 0.00038763100000000004,
+          "cumulative_seconds": 0.019225999
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<built-in method builtins.next>",
+          "calls": 3000,
+          "self_seconds": 0.000630813,
+          "cumulative_seconds": 0.016368129000000002
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/tools/benchmark_central_registry.py",
+          "line": 197,
+          "function": "publish",
+          "calls": 500,
+          "self_seconds": 0.000737814,
+          "cumulative_seconds": 0.012888738
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/tools/benchmark_central_registry.py",
+          "line": 152,
+          "function": "lease_slot_for_writing",
+          "calls": 2000,
+          "self_seconds": 0.0026142820000000003,
+          "cumulative_seconds": 0.010549927
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/contextlib.py",
+          "line": 141,
+          "function": "__exit__",
+          "calls": 1500,
+          "self_seconds": 0.000324881,
+          "cumulative_seconds": 0.00886747
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/contextlib.py",
+          "line": 132,
+          "function": "__enter__",
+          "calls": 1500,
+          "self_seconds": 0.000296101,
+          "cumulative_seconds": 0.008121641
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/tools/benchmark_central_registry.py",
+          "line": 67,
+          "function": "lease_slot_for_reading",
+          "calls": 1000,
+          "self_seconds": 0.001538924,
+          "cumulative_seconds": 0.005187389000000001
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/tools/benchmark_central_registry.py",
+          "line": 124,
+          "function": "_signal",
+          "calls": 3500,
+          "self_seconds": 0.001181516,
+          "cumulative_seconds": 0.0031072860000000003
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/tools/benchmark_central_registry.py",
+          "line": 43,
+          "function": "_evict",
+          "calls": 1000,
+          "self_seconds": 0.001621187,
+          "cumulative_seconds": 0.0029192230000000003
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 341,
+          "function": "set",
+          "calls": 500,
+          "self_seconds": 0.000372522,
+          "cumulative_seconds": 0.001403746
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/src/core/central_registry.py",
+          "line": 143,
+          "function": "_new_entry",
+          "calls": 500,
+          "self_seconds": 0.000208562,
+          "cumulative_seconds": 0.0011845760000000001
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/contextlib.py",
+          "line": 299,
+          "function": "helper",
+          "calls": 1500,
+          "self_seconds": 0.00036506,
+          "cumulative_seconds": 0.0009713030000000001
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 351,
+          "function": "wait",
+          "calls": 500,
+          "self_seconds": 0.00038514200000000005,
+          "cumulative_seconds": 0.0009501420000000001
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 239,
+          "function": "__exit__",
+          "calls": 2000,
+          "self_seconds": 0.000427072,
+          "cumulative_seconds": 0.000850492
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'issubset' of 'frozenset' objects>",
+          "calls": 5500,
+          "self_seconds": 0.000796654,
+          "cumulative_seconds": 0.000796654
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 236,
+          "function": "__enter__",
+          "calls": 2000,
+          "self_seconds": 0.000309831,
+          "cumulative_seconds": 0.0007944740000000001
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/src/core/central_registry.py",
+          "line": 44,
+          "function": "reserve_slot",
+          "calls": 1500,
+          "self_seconds": 0.00035029200000000004,
+          "cumulative_seconds": 0.000728463
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 334,
+          "function": "is_set",
+          "calls": 500,
+          "self_seconds": 0.000262691,
+          "cumulative_seconds": 0.000715054
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 347,
+          "function": "clear",
+          "calls": 500,
+          "self_seconds": 0.00022337000000000002,
+          "cumulative_seconds": 0.000656834
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/contextlib.py",
+          "line": 104,
+          "function": "__init__",
+          "calls": 1500,
+          "self_seconds": 0.00048584200000000006,
+          "cumulative_seconds": 0.000606243
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'get' of 'dict' objects>",
+          "calls": 6500,
+          "self_seconds": 0.0005835910000000001,
+          "cumulative_seconds": 0.0005835910000000001
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/src/core/central_registry.py",
+          "line": 55,
+          "function": "slot_view",
+          "calls": 2000,
+          "self_seconds": 0.000420572,
+          "cumulative_seconds": 0.000560232
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 303,
+          "function": "notify_all",
+          "calls": 500,
+          "self_seconds": 0.00011002000000000001,
+          "cumulative_seconds": 0.0005035440000000001
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 94,
+          "function": "__enter__",
+          "calls": 2000,
+          "self_seconds": 0.00030503,
+          "cumulative_seconds": 0.00048464300000000004
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 97,
+          "function": "__exit__",
+          "calls": 2000,
+          "self_seconds": 0.00030434,
+          "cumulative_seconds": 0.00042342000000000004
+        },
+        {
+          "file": "/home/nicolo/.local/share/pdm/python/cpython@3.12.12/lib/python3.12/multiprocessing/synchronize.py",
+          "line": 277,
+          "function": "notify",
+          "calls": 500,
+          "self_seconds": 0.000237611,
+          "cumulative_seconds": 0.000393524
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/tools/benchmark_central_registry.py",
+          "line": 146,
+          "function": "_after_read",
+          "calls": 500,
+          "self_seconds": 9.991100000000001e-05,
+          "cumulative_seconds": 0.000354973
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/tools/benchmark_central_registry.py",
+          "line": 137,
+          "function": "_evicted",
+          "calls": 1000,
+          "self_seconds": 0.00027389,
+          "cumulative_seconds": 0.000350582
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'acquire' of '_multiprocessing.SemLock' objects>",
+          "calls": 4000,
+          "self_seconds": 0.00029332100000000003,
+          "cumulative_seconds": 0.00029332100000000003
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method '__exit__' of '_thread.RLock' objects>",
+          "calls": 3000,
+          "self_seconds": 0.00028125000000000003,
+          "cumulative_seconds": 0.00028125000000000003
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/src/core/central_registry.py",
+          "line": 51,
+          "function": "release_slot",
+          "calls": 1000,
+          "self_seconds": 0.000178591,
+          "cumulative_seconds": 0.000264802
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'from_buffer' of '_ctypes.PyCStructType' objects>",
+          "calls": 1000,
+          "self_seconds": 0.00026372200000000003,
+          "cumulative_seconds": 0.00026372200000000003
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method '__enter__' of '_multiprocessing.SemLock' objects>",
+          "calls": 2000,
+          "self_seconds": 0.00017961300000000002,
+          "cumulative_seconds": 0.00017961300000000002
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'items' of 'dict' objects>",
+          "calls": 2000,
+          "self_seconds": 0.000168302,
+          "cumulative_seconds": 0.000168302
+        },
+        {
+          "file": "/home/nicolo/build-env/sft_cv_2026_2027/tools/benchmark_central_registry.py",
+          "line": 149,
+          "function": "_read_started",
+          "calls": 500,
+          "self_seconds": 9.7051e-05,
+          "cumulative_seconds": 0.000167541
+        }
+      ]
+    }
+  ],
+  "measurement_note": "Two/four stripes; one ALL subscription per consumer. Medians of three runs. 1000 iterations/run except 64-consumer/four-stripe cases (300). Full image case changes only ID fields. GC disabled only while timed. Separate instrumented profiles.",
+  "cpu_model": "AMD Ryzen 7 7800X3D",
+  "date": "2026-10-12"
+}

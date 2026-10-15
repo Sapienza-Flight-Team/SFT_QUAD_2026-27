@@ -1,0 +1,4 @@
+focal_length: 16.0  # focal length [mm]
+sensor_size: 2.74  # pixel size [um]
+photo_shape: [5320, 3032]  # image shape [px]
+optic_center: [2660, 1516]  # px coordinates of the optic center

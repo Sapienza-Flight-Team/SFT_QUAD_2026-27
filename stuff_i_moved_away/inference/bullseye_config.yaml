@@ -1,0 +1,55 @@
+detector:
+  class_id: 12
+  score_threshold: 0.55
+  bbox_margin_ratio: 0.06
+  radial_samples: 48
+  min_ring_count: 3
+  hsv:
+    hue_low_1: 0
+    hue_high_1: 12
+    hue_low_2: 168
+    hue_high_2: 180
+    sat_min: 55
+    val_min: 45
+    min_annular_score: 0.55
+  morphology:
+    open_kernel: 3
+    close_kernel: 5
+  support:
+    max_sat: 95
+    min_val: 165
+    dilation_kernel: 31
+    top_hat_kernel: 51
+    local_threshold: 20
+    candidate_open_kernel: 3
+    min_fill_ratio: 0.32
+    max_component_area_ratio: 0.02
+    max_candidate_aspect_ratio: 1.22
+    min_annular_score: 0.5
+  pattern:
+    adaptive_block_size: 61
+    adaptive_c: 7
+    open_kernel: 3
+    close_kernel: 5
+  candidates:
+    min_blob_area_ratio: 0.00001
+    min_candidate_area_ratio: 0.001
+    merge_distance_ratio: 0.12
+    center_tolerance_ratio: 0.07
+    max_candidate_aspect_ratio: 1.45
+  scoring:
+    radial_consistency_weight: 0.2
+    annular_structure_weight: 0.45
+    concentricity_weight: 0.1
+    support_shape_weight: 0.2
+    area_weight: 0.05
+    preferred_candidate_area_ratio: 0.003
+dataset:
+  data_root: "~/drone_dataset_yolo_final"
+  split: "val"
+  bullseye_class_id: 12
+benchmark:
+  iou_threshold: 0.5
+  debug_dir: "bullseye_debug"
+  report_path: "bullseye_results/cv_bench_report.json"
+  save_debug_images: true

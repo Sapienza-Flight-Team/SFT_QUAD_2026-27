@@ -1,0 +1,6 @@
+# Utility settings; stage selection and settings belong in mission_config.yaml.
+logger:
+  log_console: false
+  log_file: /tmp/sft_cv.log
+  log_format: '[%(asctime)s] p%(process)s {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s'
+  log_level: INFO

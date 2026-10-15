@@ -1,0 +1,32 @@
+manifold_center:  # gps coordinates of the center of the approximation (so is not necessarily the geometric center)
+  lat: 41.831504
+  lon: 12.334501
+three_points:  # 3 points of the image (there is not a preference)
+  point1:
+    lat: 41.831339
+    lon: 12.335983
+    coox: 4655
+    cooy: 629
+  point2:
+    lat: 41.833096
+    lon: 12.332349
+    coox: 499
+    cooy: 4047
+  point3:
+    lat: 41.828723
+    lon: 12.333758
+    coox: 8073
+    cooy: 4541
+mapping_area:  # 4 gps of the mapping area
+  LU:  # left-up in the image
+    lat: 41.833120
+    lon: 12.334739
+  LD:  # left-down in the image
+    lat: 41.832775
+    lon: 12.333153
+  RD:  # right-down in the image
+    lat: 41.829912
+    lon: 12.334282
+  RU:  # right-up in the image
+    lat: 41.830228
+    lon: 12.335866

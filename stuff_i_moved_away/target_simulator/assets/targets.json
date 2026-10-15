@@ -1,0 +1,97 @@
+{
+    "boundary_gps_coords": [
+        [
+            35.06010597870213,
+            -118.15539766158666
+        ],
+        [
+            35.06010389664918,
+            -118.14851879142776
+        ],
+        [
+            35.056677054150875,
+            -118.14856576532723
+        ],
+        [
+            35.05667864955517,
+            -118.15539723215625
+        ]
+    ],
+    "targets": [
+    {
+        "name": "target_0",
+        "path": "src/sft_cv/target_simulator/assets/target_0.png",
+        "side": 0.6
+    },
+    {   
+        "name": "target_1",
+        "path": "src/sft_cv/target_simulator/assets/target_1.png",
+        "side": 0.6
+    },
+    {
+        "name": "target_2",
+        "path": "src/sft_cv/target_simulator/assets/target_2.png",
+        "side": 0.6
+    },
+    {
+        "name": "target_3",
+        "path": "src/sft_cv/target_simulator/assets/target_3.png",
+        "side": 0.6
+    },
+    {
+        "name": "target_4",
+        "path": "src/sft_cv/target_simulator/assets/target_4.png",
+        "side": 0.6
+    },
+    {
+        "name": "target_5", 
+        "path": "src/sft_cv/target_simulator/assets/target_5.png",
+        "side": 0.6
+    },
+    {
+        "name": "target_6",
+        "path": "src/sft_cv/target_simulator/assets/target_6.png",
+        "side": 0.6
+    },
+    {
+        "name": "target_7",
+        "path": "src/sft_cv/target_simulator/assets/target_7.png",
+        "side": 0.6
+    },
+    {
+        "name": "target_8",
+        "path": "src/sft_cv/target_simulator/assets/target_8.png",
+        "side": 0.6
+    },
+    {
+        "name": "target_9",
+        "path": "src/sft_cv/target_simulator/assets/target_9.png",
+        "side": 0.6
+    },
+    {
+        "name": "target_bullseye",
+        "path": "src/sft_cv/target_simulator/assets/target_bullseye.png",
+        "side": 5.0
+    },
+    {
+        "name": "target_numberless_0",
+        "path": "src/sft_cv/target_simulator/assets/target_numberless.png",
+        "side": 1.2
+    },
+    {
+        "name": "target_numberless_1",
+        "path": "src/sft_cv/target_simulator/assets/target_numberless.png",
+        "side": 1.2
+    },
+    {
+        "name": "target_numberless_2",
+        "path": "src/sft_cv/target_simulator/assets/target_numberless.png",
+        "side": 1.2
+    },
+    {
+        "name": "target_numberless_3",
+        "path": "src/sft_cv/target_simulator/assets/target_numberless.png",
+        "side": 1.2
+    }
+    ]
+}

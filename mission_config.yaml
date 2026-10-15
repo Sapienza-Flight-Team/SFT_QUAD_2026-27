@@ -1,0 +1,34 @@
+- dummy_consumer:
+  - default:
+    - instances: 10
+    - release_delay_range:
+      - 3.0
+      - 4.0
+- image_generator:
+  - default:
+    - generation_rate_hz: 60
+    - first_capture_id: 0
+    - resolution: [5320, 3032]
+    - channels: 1
+    - bar_width: 200
+    - bar_speed_px: 80
+    - exposure_time: 0.0
+    - gain: 1.0
+- sensor_generator:
+  - default:
+    - generation_rate_hz: 60
+    - first_capture_id: 0
+    - latitude: 45.0
+    - longitude: 9.0
+    - coordinate_step: 0.0001
+    - altitude_msl: 150.0
+    - altitude_relative: 50.0
+    - waypoints: 10
+- viewer:
+  - default:
+    - display: false
+    - preview_resolution:
+      - 1064
+      - 606
+    - window_name: 'Registry: image + PixData (Q / Esc to quit)'
+    - max_frames: 0

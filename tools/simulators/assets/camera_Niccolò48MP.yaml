@@ -1,0 +1,6 @@
+# La distanza focale non è ben nota, tuttavia è sufficiente fornire focal_length e sensor_size coerenti alla ratio
+# 0.0001727817466698795 è la ratio (pixelsize / focal_length) per il sensore di Niccolò a 48MP
+focal_length: 24.0  # focal length [mm]
+sensor_size: 4.14676192  # pixel size [um]
+photo_shape: [8064, 6048]  # image shape [px]
+optic_center: [4032, 3024]  # px coordinates of the optic center

@@ -1,0 +1,3 @@
+wants: []
+input: [candidate_coordinates]
+output: [px4_commands]

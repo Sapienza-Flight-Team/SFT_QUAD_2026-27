@@ -1,0 +1,3 @@
+wants: []
+input: [aggregator_output]
+output: [resized_aggregator_output]

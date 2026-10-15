@@ -1,0 +1,3 @@
+wants: []
+input: [aggregator_output]
+output: [candidate_coordinates]

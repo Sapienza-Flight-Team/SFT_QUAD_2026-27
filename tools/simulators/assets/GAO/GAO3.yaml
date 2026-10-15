@@ -1,0 +1,33 @@
+path: "./src/sft_cv/mapping/assets/Maryland1GEarth.png"
+manifold_center:  # gps coordinates of the center of the approximation (so is not necessarily the geometric center)
+  lat: 41.738165
+  lon: 12.514588
+three_points:  # 3 points of the image (there is not a preference)
+  point1:
+    lat: 41.738013
+    lon: 12.515831
+    coox: 7397
+    cooy: 2067
+  point2:
+    lat: 41.738245
+    lon: 12.513024
+    coox: 812
+    cooy: 4456
+  point3:
+    lat: 41.739477
+    lon: 12.513722
+    coox: 926
+    cooy: 304
+mapping_area:  # 4 gps of the mapping area
+  LU:
+    lat: 41.739059
+    lon: 12.513807
+  LD:
+    lat: 41.738245
+    lon: 12.513321
+  RD:
+    lat: 41.737540
+    lon: 12.515155
+  RU:
+    lat: 41.738284
+    lon: 12.515724

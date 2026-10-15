@@ -1,0 +1,211 @@
+airdrop_bound:
+  bl:
+  - 90.0
+  - 180.0
+  br:
+  - 90.0
+  - -180.0
+  tl:
+  - -90.0
+  - -180.0
+  tr:
+  - -90.0
+  - 180.0
+camera:
+  altitude_m: 50.0
+  auto_gain: Continuous
+  balance_white_auto: Continuous
+  black_level: 0
+  bsl_color_space: sRgb
+  emulated: false
+  emulation_use_random_data: false
+  exposure_auto: Continuous
+  exposure_mode: Timed
+  focal_length_mm: 16.0
+  frontal_overlap: 0.85
+  gamma: 1
+  img_out_dir: ./data/outs
+  light_source_preset: Daylight6500K
+  mock_metadata_csv: data/outs/20260526-225524/metadata_20260526-225524.csv
+  pixel_format: BayerRG8
+  profile:
+    max_auto_gain: 30
+    max_exposure_time: 400
+    min_auto_gain: 0
+    min_exposure_time: 100
+    auto_target_brightness: 0.2
+  resolution:
+  - 5320
+  - 3032
+  sensor_height_mm: 8.31
+  sensor_width_mm: 14.58
+  side_overlap: 0.5
+decision_system:
+  fake_decision_inputs:
+    enabled: false
+  bbox_size_filter_px: 0.0
+  class_handler:
+    classes: [0, 1, 2, 3]
+  debug: true
+  decision:
+    filter: 0.6
+    horizon: 0.99
+  instance_splitter:
+    enabled: true
+    min_instance_distance_m: 15.0
+  perimeter:
+    method: dbscan
+    eps_m: 4.0
+    min_samples: 2
+    centroid: weighted_mean
+    keep_extra_frac: 0.5
+  targets:
+    0: {name: GCP_numbered, clusters: 1, clusterize: true}
+    1: {name: GCP_non_numbered, clusters: 1, clusterize: true}
+    2: {name: BULLSEYE, clusters: 0, clusterize: false}
+    3: {name: X, clusters: 0, clusterize: false}
+  geoloc:
+    altitude_error: 2.0
+    altitude_maxerror: 5.0
+    focal_length: 16.0
+    image_shape:
+    - 5320
+    - 3032
+    manifold_center:
+    - 34.754326
+    - -118.3276258
+    monte_carlo: 1000
+    ne_error: 1.0
+    ne_maxerror: 2.0
+    p_value: 70.0
+    pixel_size: 2.74
+    px2body_error_angle_deg: 184.0
+    px2body_matrix:
+    - - 0.0
+      - -1.0
+    - - 1.0
+      - 0.0
+    real_target_location:
+    - 41.831328333
+    - 12.333625556
+    rp_error: 0.02
+    rp_maxerror: 0.02
+    yaw_error: 0.02
+    yaw_maxerror: 0.02
+  mock:
+    metadata_csv: ./data/synth/pontegaleria/metadata.csv
+  root: ./src/sft_cv/decision_system/.tmp
+inference_engine:
+  # Raw YOLO output order for the current 4-class model:
+  #   0 = GCP_numbered, 1 = GCP_non_numbered, 2 = bullseye, 3 = X.
+  # Values map raw detector classes into canonical decision_system.targets names.
+  classes: [0, 1, 2, 3]
+  yolo_class_map:
+    0: GCP_numbered
+    1: GCP_non_numbered
+    2: BULLSEYE
+    3: X
+  images_per_batch: 1
+  weights: models/yolo/full-image-remapped_best.pt
+homography_stage:
+  output_size: null
+logger:
+  log_console: true
+  log_file: /tmp/sft_cv.log
+  log_format: '[%(asctime)s] p%(process)s {%(pathname)s:%(lineno)d} %(levelname)s
+    - %(message)s'
+  log_level: INFO
+mavlink:
+  baud: 921600
+  connection: /dev/ttyTHS1
+  decision_output_routing:
+    enabled: false
+    route_mode: current_mission
+    poll_interval_s: 0.25
+    command_poll_interval_s: 0.05
+    min_distinct_coordinate_separation_m: 0.1
+    bullseye_mission_names:
+    - BULLSEYE
+    survey_mission_names:
+    - PERIMETER
+    bullseye:
+      enabled: true
+      target_names:
+      - BULLSEYE
+      waypoint_altitude_m: 50
+      lower_waypoint_altitude_m: 3.0
+      acceptance_radius_m: 2.0
+      actuator_command_id: 187
+      actuator_set_index: 1.0
+      actuator_activate_value: 1.0
+      actuator_hold_s: 2.0
+      actuator_deactivate_value: -1.0
+    survey:
+      enabled: true
+      target_names: ["GCP_non_numbered"]
+      expected_coordinate_count: 4
+      altitude_m: 100.0
+      transect_spacing_m: 20.0
+      trigger_distance_m: 15.0
+      angle_deg: 0.0
+      turnaround_distance_m: 0.0
+      trigger_camera: true
+      camera_trigger_in_turnarounds: false
+      hover_and_capture: false
+      hover_delay_s: 0.0
+      use_condition_gate: false
+      altitude_frame: 3
+      clip_mode: qgc_chord
+      include_current_position: true
+      return_to_start: false
+      optimize_angle: true
+      angle_start_deg: 0.0
+      angle_stop_deg: 180.0
+      angle_step_deg: 1.0
+      order_vertices: true
+      gripper_transfer:
+        enabled: true
+        next_pipeline_mission: NUMBERS
+        gripper_id: 3
+        grab_action: 1
+        release_action: 0
+        midpoint_fraction: 0.5
+        waypoint_altitude_m: 60.0
+        waypoint_hold_s: 0.0
+        waypoint_acceptance_radius_m: 2.0
+        waypoint_pass_radius_m: 0.0
+    start_mission_after_append: true
+    require_start_mission_success: false
+  mock_type: simulated
+  require_vground_for_ready: false
+  serial_port: /dev/ttyACM0
+  timeout: 15
+  unreal_host_ip: 127.0.0.1
+  unreal_trigger_port: 3001
+  unreal_video_stream_port: 9999
+  fake_wp_survey: false
+  fake_coords:
+  - - 35.0500477
+    - -118.151702
+bbox_logging:
+  enabled: true
+  db_path: null
+  busy_timeout_ms: 1000
+mock_pipeline:
+  enabled: false
+  stages: []
+picture_saver:
+  metadata_db: ./data/outs/metadata.csv
+  saving_mode: NPY
+preprocessor:
+  target_resolution: [2656, 1504]
+target_simulator:
+  blend_alpha: 1.0
+  export_kml: true
+  kml_output_path: ./data/outs/target_simulator_targets.kml
+  random_seed: null
+  unlink_input_shm: true
+utils:
+  height_threshold: 10
+  mission_yaml: mission_config.yaml
+  yaml_path: sft_config.yaml

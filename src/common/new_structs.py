@@ -25,12 +25,17 @@ def _image_shape() -> tuple[int, ...]:
     producer = next(
         spec
         for spec in stages.values()
-        if "tagged_image" in yaml.safe_load(spec["contract"].read_text(encoding="utf-8"))["output"]
+        if "tagged_image"
+        in yaml.safe_load(spec["contract"].read_text(encoding="utf-8"))["output"]
     )
     config_module = producer["module"].rsplit(".", 1)[0] + "." + producer["config"].stem
     image = {**import_module(config_module).CONFIG, **producer["settings"]}
     width, height = image["resolution"]
-    return (height, width) if image["channels"] == 1 else (height, width, image["channels"])
+    return (
+        (height, width)
+        if image["channels"] == 1
+        else (height, width, image["channels"])
+    )
 
 
 IMAGE_SHAPE = _image_shape()
@@ -41,9 +46,9 @@ FIELD_REGISTRY: dict[str, list[tuple[str, type]]] = {
         ("frame_counter", ct.c_uint64),
         ("exposure_time", ct.c_double),
         ("gain", ct.c_double),
-        ("black_level", ct.c_uint32),
+        ("black_level", ct.c_double),
         ("bsl_color_space", ct.c_char * TEXT_CAPACITY),
-        ("gamma", ct.c_uint32),
+        ("gamma", ct.c_double),
         ("light_source_preset", ct.c_char * TEXT_CAPACITY),
     ],
     "PixData": [
@@ -63,7 +68,12 @@ FIELD_REGISTRY: dict[str, list[tuple[str, type]]] = {
 
 class PhotoExif(ct.Structure):
 
-    _fields_ = [*FIELD_REGISTRY["PhotoExif"], ("image", ct.c_uint8 * IMAGE_SIZE)]
+    # The SDK appends chunk metadata after pixels when grabbing into this buffer.
+    _fields_ = [
+        *FIELD_REGISTRY["PhotoExif"],
+        ("image", ct.c_uint8 * IMAGE_SIZE),
+        ("_camera_chunks", ct.c_uint8 * 4096),
+    ]
 
 
 class PixData(ct.Structure):

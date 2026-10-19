@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from importlib import import_module
-from multiprocessing import Process, set_start_method
+from multiprocessing import Pipe, Process, set_start_method
 
 import yaml
 
@@ -53,22 +53,30 @@ class Pipeline(Process):
             self.import_classes(catalog)
 
             for stage_name, specs in catalog.items():
-                self.logger.debug("Reading contract for %s: %s", stage_name, specs["contract"])
+                self.logger.debug(
+                    "Reading contract for %s: %s", stage_name, specs["contract"]
+                )
                 with open(specs["contract"], encoding="utf-8") as file:
                     contract = yaml.safe_load(file)
 
                 for data in dict.fromkeys(contract.get("input", [])):
                     datatype = DATA_TYPE_REGISTRY[data]["data_type"]
-                    self.logger.info("Registering %s as consumer of %s", stage_name, data)
+                    self.logger.info(
+                        "Registering %s as consumer of %s", stage_name, data
+                    )
                     self.registry.register_consumer(stage_name, datatype)
                 for data in dict.fromkeys(contract.get("output", [])):
                     datatype = DATA_TYPE_REGISTRY[data]["data_type"]
                     if datatype in self.registry.producers:
                         raise ValueError(f"{data!r} already has a producer")
-                    self.logger.info("Registering %s as producer of %s", stage_name, data)
+                    self.logger.info(
+                        "Registering %s as producer of %s", stage_name, data
+                    )
                     self.registry.register_producer(stage_name, datatype)
 
-                self.logger.info("Constructing stage %s (%s)", stage_name, specs["class"].__name__)
+                self.logger.info(
+                    "Constructing stage %s (%s)", stage_name, specs["class"].__name__
+                )
                 self.logger.debug("Settings for %s: %s", stage_name, specs["settings"])
                 self.processes.append(
                     specs["class"](
@@ -80,6 +88,30 @@ class Pipeline(Process):
                 )
                 self.processes[-1].name = stage_name
 
+            stages = {stage.name: stage for stage in self.processes}
+            sensor, camera = stages.get("sensor_generator"), stages.get("cam")
+            if sensor is not None and sensor.options["external_clock"]:
+                if (
+                    camera is None
+                    or camera.configs.get("trigger_mode") != "On"
+                    or camera.configs.get("trigger_source") != "Software"
+                ):
+                    raise ValueError(
+                        "external_clock requires cam trigger_mode=On and trigger_source=Software"
+                    )
+                if not (
+                    camera.configs["chunk_mode_active"]
+                    and camera.configs["chunk_enable"]
+                    and camera.configs["chunk_selector"] == "CounterValue"
+                ):
+                    raise ValueError(
+                        "external_clock requires an enabled CounterValue chunk"
+                    )
+                sensor.capture_connection, camera.capture_connection = Pipe(
+                    duplex=False
+                )
+                camera.capture_period = 1 / sensor.options["generation_rate_hz"]
+
             self.logger.info("Pipeline build complete: %d stages", len(self.processes))
         except Exception:
             self.logger.exception("Pipeline build failed")
@@ -89,6 +121,9 @@ class Pipeline(Process):
         return self.processes
 
     def close_registry(self):
+        for stage in self.processes:
+            if getattr(stage, "capture_connection", None) is not None:
+                stage.capture_connection.close()
         if self.registry is not None:
             self.logger.info("Closing central registry")
             self.registry.close()
@@ -106,6 +141,9 @@ class Pipeline(Process):
                 stage.start()
                 started.append(stage)
             for stage in started:
+                if getattr(stage, "capture_connection", None) is not None:
+                    stage.capture_connection.close()
+            for stage in started:
                 stage.join()
         except KeyboardInterrupt:
             self.logger.info("Pipeline interrupted")
@@ -115,15 +153,21 @@ class Pipeline(Process):
             for stage in started:
                 stage.join(3)
                 if stage.is_alive():
-                    self.logger.warning("Terminating stage %s after shutdown timeout", stage.name)
+                    self.logger.warning(
+                        "Terminating stage %s after shutdown timeout", stage.name
+                    )
                     stage.terminate()
                     stage.join()
-                self.logger.info("Stage %s exited with code %s", stage.name, stage.exitcode)
+                self.logger.info(
+                    "Stage %s exited with code %s", stage.name, stage.exitcode
+                )
             self.close_registry()
             self.logger.info("Pipeline stopped")
         for stage in started:
             if stage.exitcode:
-                raise RuntimeError(f"Stage {stage.name} exited with code {stage.exitcode}")
+                raise RuntimeError(
+                    f"Stage {stage.name} exited with code {stage.exitcode}"
+                )
 
 
 if __name__ == "__main__":

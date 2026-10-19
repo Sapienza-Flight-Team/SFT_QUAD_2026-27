@@ -1,257 +1,98 @@
-import datetime
-import multiprocessing as mp
-import time
-from typing import Optional, Tuple
-#from shapely.geometry import Point, Polygon
-#import pypylon.pylon as pylon
-import numpy as np
-from numpy import _typing
-from common.config import SFTConfig
-from core.logger import SFTLogger
-from common.structs import PhotoExif, Waypoint
-#from common.structs import TeensyData, unpack
-from common.pipeline_stage import PipelineStage
-import os
-from sft_math.geo.utils import magnorth2truenorth
-from core.central_registry import CentralRegistry
+"""Acquire into leased shared memory and optionally clock fake sensors."""
 
-# saver
-import csv
+from time import monotonic
+
+from pypylon import pylon
+
+from common.new_structs import PhotoExif
+from common.pipeline_stage import PipelineStage
+from .camera_buffer import LeasedBuffer
+from .camera_setup import setup_camera
 
 
 class CameraEngine(PipelineStage):
-    def __init__(
-        self,
-        configs: SFTConfig,
-        logger: SFTLogger,
-        registry: CentralRegistry,
-        stage_name: str,
+    def __init__(self, configs, logger, registry, stage_name):
+        super().__init__(configs, logger, registry, stage_name)
+        self.cam = self.capture_connection = None
+        self.capture_period = 0
 
-    ) -> None:
-        """__init__ CameraEngine
-
-        Class that is responsible for the acquisition of pictures from the jetson's camera
-
-        The process continuously captures input from the camera and deposits handles to the images
-        it in the output queue; it logs and saves the pictures to disk.
-
-        configs : SFTConfig
-            A configuration object, exposes arbitrary configs written in sft_config.yaml for
-            use in the program
-        out_q : mp.Queue
-            A queue that will be used to deposit the handles of the pictures
-
-        """
-        super().__init__(
-            configs,
-            logger,
-            registry=registry,
-            stage_name=stage_name
-        )
-        self.stopped = mp.Event()  # flag used to gently stop acquisition
-        self.stopped.clear()
-        self.is_initialized = mp.Event()
-        self.config = configs
-        self.logger = logger
-        self.config_dict = configs.config_dict
-        self.yaml_path = self.config_dict["utils"]["yaml_path"]
-        self.logger.warn("Camera process initialized!")
-
-    def mission(self) -> bool:
-        """run Get frames from the camera
-
-        Returns
-        -------
-        None
-            Does not return anything, the frames are put in the output queue as a
-            TaggedPicture struct
-        """
+    def setup_cam(self):
         self.cam = pylon.InstantCamera(
             pylon.TlFactory.GetInstance().CreateFirstDevice()
         )
         self.cam.Open()
-        self.setup_cam()
-        self.cam.StartGrabbing()
-        self.img_count = 0
-        while True:
-            while (
-                self.in_mission.is_set(self.idx)
-                and self.cam.IsGrabbing()
-                and not self.to_update.is_set(self.idx)
-            ):
-                try:
-                    ret = self.acquire_taggedpic()
-                except Exception as e:
-                    self.logger.warning(
-                        f"Error {type(e).__name__}: {e} encountered while acquiring image"
-                    )
-                    ret = None
-                    continue
+        setup_camera(self.cam, self.configs)
+        self.next_frame_at = monotonic()
 
-                image, metadata = ret
-                self.img_count += 1
-
-
-            if self.to_update.is_set(self.idx):
-                self.update()
-
-    def stop(self) -> None:
-        """stop Stops the camera engine
-
-        Sets the stop flag, the camera engine will stop after the current
-        acquisition is finished
-        """
-        if self.is_initialized.is_set():
-            self.logger.info("Setting stop flag on CameraEngine")
-            self.stopped.set()
-            self.in_mission.clear(self.idx)
-            self.to_update.clear(self.idx)
-
-            self.logger.info(f"Captured {self.img_count} images")
-            self.logger.info(
-                "Quitting camera connection and shutting down gracefully"
-            )
-            self.cam.Close()
-            self.f.flush()
-            self.logger.info("Camera connection closed")
+    def mission(self):
+        if self.stopped.is_set():
             return True
-        else:
-            self.logger.error(
-                "Trying to stop a non-constructed CameraEngine, check if the camera is plugged in."
-            )
-
-    def setup_cam(
-            self,
-        ) -> None:
-
-        """setup_cam
-        Deferred initialization of the camera, this is done to avoid
-        the camera being initialized before the process is spawned,
-        resulting in incompatible address spaces.
-        """
-        if self.is_initialized.is_set():
-            self.logger.warning("Camera already initialized")
-            return
-
-        start = time.time()
-        self.logger.info("Configuring camera parameters")
-        self.profile = self.config_dict["camera"]["profile"]
-        self.cam.TriggerSelector = "FrameStart"
-        self.cam.TriggerSource.Value = "Line1"
-        self.cam.TriggerActivation = "RisingEdge"
-        self.cam.TriggerMode.Value = "On"
-        self.cam.Gamma = self.config_dict["camera"]["gamma"]
-        self.cam.BslColorSpace = self.config_dict["camera"]["bsl_color_space"]
-        self.cam.BlackLevel = self.config_dict["camera"]["black_level"]
-        self.cam.BslLightSourcePreset.Value = self.config_dict["camera"][
-            "light_source_preset"
-        ]
-        self.cam.AutoGainUpperLimit = self.config_dict["camera"]["profile"][
-            "max_auto_gain"
-        ]
-        self.cam.PixelFormat = self.config_dict["camera"]["pixel_format"]
-        self.cam.BalanceWhiteAuto = self.config_dict["camera"]["balance_white_auto"]
-        self.cam.GainAuto = self.config_dict["camera"]["auto_gain"]
-        self.cam.AutoGainLowerLimit = self.config_dict["camera"]["profile"][
-            "min_auto_gain"
-        ]
-        self.cam.ExposureMode = self.config_dict["camera"]["exposure_mode"]
-        self.cam.ExposureAuto = self.config_dict["camera"]["exposure_auto"]
-        self.cam.AutoExposureTimeLowerLimit = self.config_dict["camera"]["profile"][
-            "min_exposure_time"
-        ]
-        self.cam.AutoExposureTimeUpperLimit = self.config_dict["camera"]["profile"][
-            "max_exposure_time"
-        ]
-        self.cam.AutoTargetBrightness = self.config_dict["camera"]["profile"][
-            "auto_target_brightness"
-        ]
-        
-        self.cam.LineSelector.Value = "Line2"
-        self.cam.LineMode.Value = "Output"
-        self.cam.LineSource.Value = "ExposureActive"
-        self.cam.LineInverter.Value = False
-
-        self.cam.MaxNumBuffer.Value = 10
-        self.cam.OutputQueueSize.Value = 10
-
-        try:
-            self.cam.ChunkModeActive.Value = True
-            self.cam.ChunkSelector.Value = "FrameID"
-            self.cam.ChunkEnable.Value = True
-            self.logger.info(
-                "CAMERA CHUNK CONFIGURED: ChunkModeActive=True, "
-                "ChunkSelector=FrameID, ChunkEnable=True"
-            )
-        except Exception as e:
-            self.logger.warning(f"Could not configure FrameID chunk: {e}")
-
-        self.logger.info("Camera setup done")
-
-    def acquire_taggedpic(
-        self,
-    ) -> Optional[Tuple[np.ndarray, PhotoExif]]:
-        """start_acquisition Acquire a tagged picture from the camera
-
-        Returns
-        -------
-        TaggedPicture
-            A struct containing a pair (RawImage, Waypoint)
-        """
-        start = time.time()
-        grabResult = self.cam.RetrieveResult(5000, pylon.TimeoutHandling_ThrowException)
-        if grabResult.GrabSucceeded():
-            stop = time.time()
-            self.logger.debug(f"Image acquired in {stop - start} seconds")
-            img: _typing.NDArray[np.uint8] = grabResult.Array
-            stop = time.time() - start
-            self.logger.debug(f"to RAM took {stop} seconds")
-
-            timestamp = time.time()
-            metadata = PhotoExif(
-                filename=os.path.join(
-                    self.out_dir, f"{self.img_count}_{self.initial_timestamp}.npy"
-                ),
-                exposure_time=self.cam.ExposureTime.Value,
-                timestamp=timestamp,
-                gain=self.cam.Gain.Value,
-                black_level=self.cam.BlackLevel.Value,
-                bsl_color_space=self.cam.BslColorSpace.Value,
-                gamma=self.cam.Gamma.Value,
-                light_source_preset=self.cam.BslLightSourcePreset.Value,
-                pixel_format=self.cam.PixelFormat.Value,
-            )
-
-            stop = time.time() - start
-            self.logger.debug(f"Acquisition took {stop} seconds \n")
-            return img, metadata
-        raise
-
-    def update(self) -> None:
-        super().update()
-        self.config_dict = self.configs.config_dict
-        if not self.is_initialized:
-            self.cam.StopGrabbing()
-            while True:
-                try:
-                    self.cam.RetrieveResult()
-                except Exception:
-                    break
-            self.is_initialized.clear()
+        if self.cam is None:
             self.setup_cam()
-            self.ready = True
-            self.cam.StartGrabbing(pylon.GrabStrategy_LatestImageOnly)
-            self.logger.info("Camera updated")
-        return None
+        software_trigger = (
+            self.cam.TriggerMode.Value == "On"
+            and self.cam.TriggerSource.Value == "Software"
+        )
+        if software_trigger:
+            if self.stopped.wait(max(0, self.next_frame_at - monotonic())):
+                return True
+            self.next_frame_at = monotonic() + self.capture_period
+        try:
+            with self.lease_slot_for_writing("tagged_image") as buffer:
+                photo = PhotoExif.from_buffer(buffer)
+                try:
+                    self.cam.SetBufferFactory(LeasedBuffer(buffer))
+                    self.cam.StartGrabbingMax(1, pylon.GrabStrategy_OneByOne)
+                    if software_trigger:
+                        self.cam.WaitForFrameTriggerReady(
+                            1000, pylon.TimeoutHandling_ThrowException
+                        )
+                        self.cam.ExecuteSoftwareTrigger()
+                    result = self.cam.RetrieveResult(500, pylon.TimeoutHandling_Return)
+                    if result is None:
+                        raise TimeoutError("Camera grab timed out")
+                    with result:
+                        if not result.GrabSucceeded():
+                            raise TimeoutError(result.ErrorDescription)
+                        if (
+                            self.cam.ChunkModeActive.Value
+                            and self.cam.ChunkSelector.Value == "CounterValue"
+                        ):
+                            result.ChunkCounterSelector.Value = (
+                                self.cam.CounterSelector.Value
+                            )
+                            capture_id = result.ChunkCounterValue.Value
+                        else:
+                            capture_id = result.GetBlockID()
+                        photo.ID = capture_id
+                        photo.exposure_time, photo.gain = (
+                            self.cam.ExposureTime.Value,
+                            self.cam.Gain.Value,
+                        )
+                        photo.gamma, photo.black_level = (
+                            self.cam.Gamma.Value,
+                            self.cam.BlackLevel.Value,
+                        )
+                        photo.bsl_color_space = self.cam.BslColorSpace.Value.encode()
+                        photo.light_source_preset = (
+                            self.cam.BslLightSourcePreset.Value.encode()
+                        )
+                finally:
+                    self.cam.StopGrabbing()
+                    self.cam.SetBufferFactory(None)
+                    del photo
+        except TimeoutError as error:
+            self.logger.warning("%s", error)
+            return self.stopped.is_set()
+        if self.capture_connection is not None:
+            self.capture_connection.send(capture_id)
+        return self.stopped.is_set()
 
-    def put(self, metadata: PhotoExif) -> None:
-        if self.out_q is None:
-            self.logger.error("Output queue is None, cannot put metadata")
-            return
-        self.send_to_queues(metadata)
+    def stop(self):
+        self.stopped.set()
 
-    def get(self) -> None:
-        raise NotImplementedError
-
-    def _dump_data(self) -> None:
-        pass
+    def _dump_data(self):
+        if self.cam is not None:
+            self.cam.Close()
+        if self.capture_connection is not None:
+            self.capture_connection.close()

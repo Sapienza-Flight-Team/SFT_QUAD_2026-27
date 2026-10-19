@@ -1,5 +1,8 @@
-# Keep the fake generators' rates and first IDs equal; arrival times may differ.
+from core.options import Options
+
+# With an external clock, camera notifications supply capture IDs and timing.
 CONFIG = {
+    "external_clock": Options((False, True), default=0),
     "generation_rate_hz": 60,
     "first_capture_id": 0,
     "latitude": 45.0,

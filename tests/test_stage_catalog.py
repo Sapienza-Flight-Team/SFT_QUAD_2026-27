@@ -52,22 +52,26 @@ def test_current_files_build_stages_with_their_own_settings(monkeypatch):
     utilities = yaml.safe_load(UTILITY_CONFIG_PATH.read_text(encoding="utf-8"))
     pipeline = pipeline_module.Pipeline(mission, utilities)
     try:
-        dummy, image, sensor, viewer = pipeline.build()
+        dummy, camera, sensor, viewer = pipeline.build()
         logger.assert_called_once_with(config=utilities["logger"])
         dummy_options = next(entry["dummy_consumer"][0]["default"]
                              for entry in mission if "dummy_consumer" in entry)
         assert dummy.configs == {key: value for option in dummy_options for key, value in option.items()}
-        assert image.options["generation_rate_hz"] == sensor.options["generation_rate_hz"] == 60
+        assert camera.configs["trigger_source"] == "Software" and sensor.options["external_clock"] is True
+        assert camera.capture_connection.writable and not camera.capture_connection.readable
+        assert sensor.capture_connection.readable and not sensor.capture_connection.writable
+        camera.capture_connection.send(42)
+        assert sensor.capture_connection.recv() == 42
         assert sensor.options["latitude"] == 45.0
-        assert viewer.options["display"] is True
+        assert viewer.options["display"] is False
         assert viewer.options["preview_resolution"] == [1064, 606]
         assert all(
             "logger" not in stage.configs and "image" not in stage.configs
             for stage in pipeline.processes
         )
         assert "image" not in utilities
-        width, height = image.options["resolution"]
+        width, height = camera.configs["resolution"]
         assert IMAGE_SHAPE == (height, width)
-        assert PhotoExif.image.size == width * height * image.options["channels"]
+        assert PhotoExif.image.size == width * height * camera.configs["channels"]
     finally:
         pipeline.close_registry()

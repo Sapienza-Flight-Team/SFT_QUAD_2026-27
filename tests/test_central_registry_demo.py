@@ -266,7 +266,7 @@ def test_generator_configs_control_shared_image_and_sensor_payloads():
             assert photo[PhotoExif.image.offset + 69] == 7
             assert photo[PhotoExif.image.offset + 70] == 255
             assert photo[PhotoExif.image.offset + 73] == 7
-            assert photo[-1] == 7
+            assert photo[PhotoExif.image.offset + PhotoExif.image.size - 1] == 7
             assert struct.unpack_from("@d", pix, PixData.lat.offset)[0] == 4.5
             assert struct.unpack_from("@d", pix, PixData.lon.offset)[0] == 5.5
     finally:

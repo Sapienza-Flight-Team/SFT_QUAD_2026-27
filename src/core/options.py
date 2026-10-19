@@ -29,6 +29,9 @@ class Options:
     def __len__(self):
         return len(self.items)
 
+    def __bool__(self):
+        return bool(self.get_default())
+
     def __repr__(self):
         return str(self.alias or self.items)
 

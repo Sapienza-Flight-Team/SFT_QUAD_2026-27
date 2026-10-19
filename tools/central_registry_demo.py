@@ -28,8 +28,10 @@ def main(configs=None):
     with MISSION_CONFIG_PATH.open(encoding="utf-8") as file:
         profile = read_profile(build_stage_catalog(), yaml.safe_load(file))
     configs = {
-        name: {**spec["settings"], **overrides.get(name, {})} for name, spec in profile.items()
+        name: {**profile.get(name, {}).get("settings", {}), **overrides.get(name, {})}
+        for name in ("image_generator", "sensor_generator", "viewer", "dummy_consumer")
     }
+    configs["sensor_generator"]["external_clock"] = False  # This demo uses fake images.
     packet = DATA_TYPE_REGISTRY["main_camera"]["data_type"]
     count = {**DUMMY_CONFIG, **configs.get("dummy_consumer", {})}["instances"]
     specifications = [

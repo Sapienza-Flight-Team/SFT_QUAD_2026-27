@@ -33,7 +33,7 @@
     - auto_function_profile: MinimizeGain
     - gamma: 1.0
     - black_level: 0.0
-    - bsl_color_space: sRGB
+    - bsl_color_space: null
     - balance_white_auto: Continuous
     - light_source_preset: Daylight5000K
     - trigger_selector: FrameStart

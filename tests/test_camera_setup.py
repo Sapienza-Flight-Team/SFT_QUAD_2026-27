@@ -13,6 +13,17 @@ from stages.cam.camera_engine.camera_setup import setup_camera
 class CameraNode:
     Min = 0
     Max = 4294967295
+    writable = readable = True
+    ENUMS = {
+        "BslColorSpace": ("sRGB", "RGB"),
+        "CounterSelector": ("Counter1", "Counter2"),
+        "ChunkCounterSelector": ("Counter1", "Counter2"),
+        "CounterEventSource": ("Off", "ExposureStart", "FrameStart"),
+        "CounterTriggerSource": ("Off", "SoftwareSignal1"),
+        "CounterResetSource": ("Off", "Line1"),
+        "SoftwareSignalSelector": ("SoftwareSignal1", "SoftwareSignal2"),
+        "ChunkSelector": ("CounterValue", "FrameID", "Timestamp"),
+    }
 
     def __init__(self, camera, name, value=0):
         self.camera, self.name, self.value = camera, name, value
@@ -26,6 +37,19 @@ class CameraNode:
         self.camera.validate(self.name, value)
         self.camera.writes.append((self.name, value))
         self.value = value
+
+    def GetValue(self):
+        return self.Value
+
+    def SetValue(self, value):
+        assert self.writable
+        self.Value = value
+
+    def GetSymbolics(self):
+        return self.ENUMS[self.name]
+
+    def GetEntryByName(self, name):
+        return SimpleNamespace(available=name in self.GetSymbolics())
 
 
 class FakeCamera:
@@ -41,7 +65,8 @@ class FakeCamera:
             "Gamma BlackLevel BslColorSpace AcquisitionFrameRateEnable AcquisitionFrameRate "
             "LineSelector LineMode LineSource LineInverter MaxNumBuffer OutputQueueSize "
             "ChunkModeActive ChunkSelector ChunkEnable CounterSelector CounterEventSource "
-            "CounterTriggerSource CounterResetSource CounterDuration SoftwareSignalSelector"
+            "CounterTriggerSource CounterResetSource CounterDuration SoftwareSignalSelector "
+            "ChunkCounterSelector"
         ).split()
         self.nodes = {name: CameraNode(self, name) for name in names}
         initial = {
@@ -63,6 +88,12 @@ class FakeCamera:
             self.nodes[name].value = value
         self.writes = []
         self.CounterReset, self.SoftwareSignalPulse = Mock(), Mock()
+        self.CounterReset.Execute.side_effect = lambda: self.writes.append(
+            ("CounterReset", None)
+        )
+        self.SoftwareSignalPulse.Execute.side_effect = lambda: self.writes.append(
+            ("SoftwareSignalPulse", None)
+        )
 
     def __getattr__(self, name):
         if name in self.nodes:
@@ -71,6 +102,9 @@ class FakeCamera:
 
     def value(self, name):
         return self.nodes[name].value
+
+    def GetNodeMap(self):
+        return SimpleNamespace(GetNode=self.nodes.get)
 
     def validate(self, name, value):
         for dimension, offset, maximum in (
@@ -100,6 +134,15 @@ class FakeCamera:
             raise ValueError("Software triggers have no edge activation")
         if name == "BslColorSpace" and value not in ("sRGB", "RGB"):
             raise ValueError("Invalid color space enumeration")
+
+
+@pytest.fixture(autouse=True)
+def genicam_nodes(monkeypatch):
+    from pypylon import genicam
+
+    monkeypatch.setattr(genicam, "IsWritable", lambda node: node.writable)
+    monkeypatch.setattr(genicam, "IsReadable", lambda node: node.readable)
+    monkeypatch.setattr(genicam, "IsAvailable", lambda node: node.available)
 
 
 @pytest.fixture
@@ -152,7 +195,8 @@ def test_gui_yaml_settings_are_passed_to_camera(monkeypatch, tmp_path):
     assert cam.value("Gain") == 4.5
     assert cam.value("TriggerSource") == "Line3"
     assert cam.value("TriggerDelay") == 12.5
-    assert cam.value("BslColorSpace") == "sRGB"
+    assert settings["bsl_color_space"] is None
+    assert "BslColorSpace" not in {name for name, _ in cam.writes}
     assert cam.value("ChunkSelector") == "CounterValue"
     assert (
         read_profile(catalog, yaml.safe_load(path.read_text()))["sensor_generator"][
@@ -220,10 +264,40 @@ def test_trigger_modes_skip_inapplicable_settings(config, source, exposure):
         )
 
 
-def test_camera_errors_propagate_without_wrapping(config):
-    config["bsl_color_space"] = "invalid"
-    with pytest.raises(ValueError, match="^Invalid color space enumeration$"):
+@pytest.mark.parametrize("value", ["invalid", False])
+def test_invalid_color_space_reports_supported_enum_values(config, value):
+    config["bsl_color_space"] = value
+    with pytest.raises(ValueError, match="BslColorSpace.*available values: sRGB, RGB"):
         setup_camera(FakeCamera(), config)
+
+
+def test_colorspace_matches_device_spelling_and_skips_unavailable_feature(
+    config, caplog
+):
+    config["bsl_color_space"] = "sRgb"
+    cam = FakeCamera()
+    setup_camera(cam, config)
+    assert cam.value("BslColorSpace") == "sRGB"
+    cam.BslColorSpace.writable = False
+    cam.writes.clear()
+    setup_camera(cam, config)
+    assert "BslColorSpace" not in {name for name, _ in cam.writes}
+    assert "Skipping unavailable/non-writable BslColorSpace" in caplog.text
+    del cam.nodes["BslColorSpace"]
+    setup_camera(cam, config)
+
+
+def test_invalid_counter_name_reports_device_values(config):
+    config["chunk_counter_selector"] = "FrameCounter"
+    with pytest.raises(ValueError, match="CounterSelector.*Counter1, Counter2"):
+        setup_camera(FakeCamera(), config)
+
+
+def test_required_counter_feature_cannot_be_silently_skipped(config):
+    cam = FakeCamera()
+    cam.CounterSelector.writable = False
+    with pytest.raises(RuntimeError, match="CounterSelector.*unavailable"):
+        setup_camera(cam, config)
 
 
 def test_stage_initializes_camera_and_resets_its_counter(monkeypatch, config):
@@ -243,6 +317,55 @@ def test_stage_initializes_camera_and_resets_its_counter(monkeypatch, config):
     cam.Open.assert_called_once_with()
     cam.CounterReset.Execute.assert_called_once_with()
     assert cam.CounterSelector.Value == "Counter2"
-    assert cam.CounterEventSource.Value == "FrameStart"
+    assert cam.ChunkCounterSelector.Value == "Counter2"
+    assert cam.CounterEventSource.Value == "ExposureStart"
     assert cam.CounterTriggerSource.Value == "SoftwareSignal1"
+    assert cam.CounterResetSource.Value == "Off"
+    assert cam.CounterDuration.Value == cam.CounterDuration.Max
     cam.SoftwareSignalPulse.Execute.assert_called_once_with()
+    assert cam.writes.index(("SoftwareSignalPulse", None)) < cam.writes.index(
+        ("TriggerMode", "On")
+    )
+
+
+@pytest.mark.parametrize("counter", ["Counter1", "Counter2"])
+def test_reset_rearms_the_selected_counter_without_restarting_camera(config, counter):
+    from stages.cam.camera_engine.camera_engine_stage import CameraEngine
+
+    cam = FakeCamera()
+    cam.Close, cam.Open, cam.StopGrabbing = Mock(), Mock(), Mock()
+    config["chunk_counter_selector"] = counter
+    setup_camera(cam, config)
+    stage = SimpleNamespace(cam=cam, configs=config, last_frame_id=123)
+    CameraEngine.reset_frame_counter(stage)
+    assert stage.last_frame_id is None
+    assert cam.CounterSelector.Value == cam.ChunkCounterSelector.Value == counter
+    assert (
+        cam.CounterReset.Execute.call_count
+        == cam.SoftwareSignalPulse.Execute.call_count
+        == 2
+    )
+    cam.Close.assert_not_called()
+    cam.Open.assert_not_called()
+    cam.StopGrabbing.assert_not_called()
+
+
+@pytest.mark.parametrize(
+    "change",
+    [
+        {"chunk_mode_active": False},
+        {"chunk_enable": False},
+        {"chunk_selector": "FrameID"},
+    ],
+)
+def test_camera_rejects_non_counter_configuration_before_open(
+    monkeypatch, config, change
+):
+    from stages.cam.camera_engine import camera_engine_stage
+
+    config.update(change)
+    create = Mock()
+    monkeypatch.setattr(camera_engine_stage.pylon, "InstantCamera", create)
+    with pytest.raises(ValueError, match="enabled CounterValue"):
+        camera_engine_stage.CameraEngine.setup_cam(SimpleNamespace(configs=config))
+    create.assert_not_called()

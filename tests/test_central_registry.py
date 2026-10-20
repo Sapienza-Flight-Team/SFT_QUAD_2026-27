@@ -572,3 +572,43 @@ def test_mixed_groups_and_out_of_order_arrivals_match_reference():
         for registry in registries:
             for helper in registry.data_array.values():
                 helper.close()
+
+
+@pytest.mark.parametrize("primitive", [Image, Sensors])
+def test_repeated_id_zero_does_not_exhaust_slots_or_replace_published_data(primitive):
+    registry = CentralRegistry()
+    registry.register_consumer("reader", primitive)
+    registry.register_producer("producer", primitive)
+    helper = registry.data_array[primitive]
+    try:
+        assert len(helper.slots) == 18
+        publish(registry, 0, primitive)
+        original_slot = registry.entries[0][primitive]
+        for _ in range(100):
+            with registry.lease_slot_for_writing(primitive) as view:
+                record = primitive.from_buffer(view)
+                record.ID, record.value = 0, 999
+                del record
+            assert registry.entries[0][primitive] == original_slot
+            assert len(helper.free_slots) == 17
+        with registry.lease_slot_for_reading(primitive, "reader") as views:
+            assert struct.unpack_from("@Q", views[primitive], primitive.value.offset)[0] == 123
+        publish(registry, 1, primitive)
+        with registry.lease_slot_for_reading(primitive, "reader") as views:
+            assert ids(views) == {1}
+    finally:
+        registry.close()
+
+
+def test_duplicate_while_reader_holds_data_preserves_original_and_slot_budget(registry):
+    subscribe(registry)
+    publish(registry, 0)
+    original_slots = dict(registry.entries[0])
+    available = free_counts(registry)
+    with registry.lease_slot_for_reading(ALL, "reader") as views:
+        for _ in range(50):
+            publish(registry, 0)
+        assert dict(registry.entries[0]) == original_slots
+        assert free_counts(registry) == available
+        assert ids(views) == {0}
+        assert not registry.events[ALL]["reader"].is_set()

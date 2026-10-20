@@ -217,6 +217,14 @@ class CentralRegistry:
             with self._lock:
                 self.latest_id = max(self.latest_id, capture_id)
                 entry = self.entries.get(capture_id)
+                if entry is not None and datatype in entry:
+                    # Published cells are immutable, including while readers hold
+                    # them. Replacing this reference would also leak the old slot.
+                    self.logger.warning(
+                        "[registry] Discarding duplicate %s capture=%d; keeping original slot=%d",
+                        datatype.__name__, capture_id, entry[datatype],
+                    )
+                    return
                 if entry is None:
                     # Delayed fields may join an existing older capture, but a
                     # missing older ID must not recreate an evicted entry.

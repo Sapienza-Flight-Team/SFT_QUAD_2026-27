@@ -2,12 +2,12 @@
 
 from time import monotonic
 
-from pypylon import pylon
+from pypylon import genicam, pylon
 
 from common.new_structs import PhotoExif
 from common.pipeline_stage import PipelineStage
 from .camera_buffer import LeasedBuffer
-from .camera_setup import setup_camera
+from .camera_setup import reset_frame_counter, set_enum, setup_camera
 
 
 class CameraEngine(PipelineStage):
@@ -15,14 +15,57 @@ class CameraEngine(PipelineStage):
         super().__init__(configs, logger, registry, stage_name)
         self.cam = self.capture_connection = None
         self.capture_period = 0
+        self.last_frame_id = None
 
     def setup_cam(self):
+        if not (
+            self.configs["chunk_mode_active"]
+            and self.configs["chunk_enable"]
+            and self.configs["chunk_selector"] == "CounterValue"
+        ):
+            raise ValueError("Camera capture requires an enabled CounterValue chunk")
         self.cam = pylon.InstantCamera(
             pylon.TlFactory.GetInstance().CreateFirstDevice()
         )
         self.cam.Open()
         setup_camera(self.cam, self.configs)
         self.next_frame_at = monotonic()
+
+    def reset_frame_counter(self):
+        """Reset without rebooting; requires paused triggers and a fresh session."""
+        reset_frame_counter(self.cam, self.configs["chunk_counter_selector"])
+        self.last_frame_id = None
+
+    def _capture_id(self, result):
+        """Read the selected counter's snapshot belonging to this exact image."""
+        nodemap = result.GetChunkDataNodeMap()
+        set_enum(
+            nodemap, "ChunkCounterSelector", self.configs["chunk_counter_selector"]
+        )
+        node = nodemap.GetNode("ChunkCounterValue")
+        if node is None or not genicam.IsReadable(node):
+            raise RuntimeError("Grab result has no readable ChunkCounterValue")
+        capture_id = node.GetValue()
+        if capture_id < 0 or (
+            self.last_frame_id is not None and capture_id <= self.last_frame_id
+        ):
+            raise RuntimeError(
+                f"Camera counter did not advance: {self.last_frame_id} -> {capture_id}. "
+                "Check counter setup; resetting IDs requires a fresh registry session."
+            )
+        if self.last_frame_id is not None and capture_id != self.last_frame_id + 1:
+            self.logger.warning(
+                "Camera counter gap: %d -> %d", self.last_frame_id, capture_id
+            )
+        return capture_id
+
+    def _read_camera_value(self, name, default):
+        node = self.cam.GetNodeMap().GetNode(name)
+        return (
+            node.GetValue()
+            if node is not None and genicam.IsReadable(node)
+            else default
+        )
 
     def mission(self):
         if self.stopped.is_set():
@@ -54,16 +97,7 @@ class CameraEngine(PipelineStage):
                     with result:
                         if not result.GrabSucceeded():
                             raise TimeoutError(result.ErrorDescription)
-                        if (
-                            self.cam.ChunkModeActive.Value
-                            and self.cam.ChunkSelector.Value == "CounterValue"
-                        ):
-                            result.ChunkCounterSelector.Value = (
-                                self.cam.CounterSelector.Value
-                            )
-                            capture_id = result.ChunkCounterValue.Value
-                        else:
-                            capture_id = result.GetBlockID()
+                        capture_id = self._capture_id(result)
                         photo.ID = capture_id
                         photo.exposure_time, photo.gain = (
                             self.cam.ExposureTime.Value,
@@ -73,10 +107,12 @@ class CameraEngine(PipelineStage):
                             self.cam.Gamma.Value,
                             self.cam.BlackLevel.Value,
                         )
-                        photo.bsl_color_space = self.cam.BslColorSpace.Value.encode()
-                        photo.light_source_preset = (
-                            self.cam.BslLightSourcePreset.Value.encode()
-                        )
+                        photo.bsl_color_space = self._read_camera_value(
+                            "BslColorSpace", ""
+                        ).encode()
+                        photo.light_source_preset = self._read_camera_value(
+                            "BslLightSourcePreset", ""
+                        ).encode()
                 finally:
                     self.cam.StopGrabbing()
                     self.cam.SetBufferFactory(None)
@@ -84,6 +120,7 @@ class CameraEngine(PipelineStage):
         except TimeoutError as error:
             self.logger.warning("%s", error)
             return self.stopped.is_set()
+        self.last_frame_id = capture_id
         if self.capture_connection is not None:
             self.capture_connection.send(capture_id)
         return self.stopped.is_set()

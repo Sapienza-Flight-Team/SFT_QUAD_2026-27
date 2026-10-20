@@ -37,7 +37,8 @@ CONFIG = {
     ),
     "gamma": Options(1.0, default=1.0),
     "black_level": Options(0.0, default=0.0),
-    "bsl_color_space": Options(("sRGB", "RGB"), default=0),
+    # a2A5320-23ucBAS exposes this only with RGB8 / YCbCr422, not BayerRG8.
+    "bsl_color_space": Options((None, "sRGB", "RGB"), default=0),
     "balance_white_auto": Options(("Off", "Once", "Continuous"), default=2),
     "light_source_preset": Options(
         ("Off", "Daylight5000K", "Daylight6500K", "Tungsten2800K"), default=1

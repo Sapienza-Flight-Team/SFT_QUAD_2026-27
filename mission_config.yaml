@@ -29,7 +29,7 @@
     - waypoints: 10
 - viewer:
   - default:
-    - display: false
+    - display: true
     - preview_resolution:
       - 1064
       - 606

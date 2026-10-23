@@ -1,428 +1,456 @@
-# Central registry: implementation guide
+# Central registry
 
-The implementation is in [`src/core/central_registry.py`](../src/core/central_registry.py).
-It joins primitive inputs by capture ID, keeps their payloads in shared memory,
-and lets each consumer lease its latest complete primitive or group. The registry
-process owns the dictionaries, events, slot pools and reader counts. Stage
-processes receive references to the shared buffers through pipes.
+This guide describes [central_registry.py](../src/core/central_registry.py):
+a latest-data registry with shared-memory buffers, exact capture matching,
+and blocking reads. It first explains the design, then every function.
 
-The performance-sensitive implementation uses integer masks and cached binary
-messages. These represent ordinary presence checks and buffer locations; the
-examples below explain how those representations work.
+## Contents
 
-## Assumptions
+- [Overview](#overview)
+- [State and storage](#state-and-storage)
+- [A complete local example](#a-complete-local-example)
+- [Module helpers and Entry](#module-helpers-and-entry)
+- [RegistryClient functions](#registryclient-functions)
+- [CentralRegistry functions](#centralregistry-functions)
+- [Operating rules](#operating-rules)
 
-- Each primitive has one producer and one outstanding write lease.
-- Producers write each primitive once per nonnegative capture ID.
-- Matching inputs use the same capture ID, even when their arrival times differ.
-- Each consumer holds one read lease at a time across its subscriptions.
-- Consumers want the latest complete matching capture; intermediate captures may
-  be skipped. The registry does not queue every capture for every consumer.
-- Every derived view or array is used inside its lease.
-- Registration can happen during acquisition. Existing memory blocks remain in
-  place when capacity grows.
+## Overview
 
-These assumptions let the registry avoid duplicate-write and overlapping-lease
-checks. They are also needed for its memory budget to be sufficient.
+The registry connects producers and consumers without sending payloads through
+Python queues. Each primitive datatype has its own shared-memory allocation.
+Producers borrow writable cells; consumers borrow read-only views of cells
+that have already been published.
 
-## Capture IDs and physical slots are different
+A **primitive** is a fixed-size `ctypes.Structure` class.
+A **group** is a set of primitive classes required together.
+A **capture entry** maps a capture ID to the slots containing its primitives.
+A **subscription** is one consumer's request for one group.
 
-Each primitive has its own `SharedMemoryHelper`, shared-memory blocks and free
-slot queue. A producer reserves a cell before knowing which capture it will
-contain. The registry reads the completed cell's `ID` after the producer releases
-its lease, then records the association:
+For example, a consumer requesting `{Image, Sensors}` can read capture 42 only
+after both primitives with ID 42 have been published. Matching compares IDs,
+not timestamps. A consumer requesting just `Image` can proceed sooner.
 
-```python
-entries[capture_id][primitive] = slot
-```
+Reads return the **latest complete group** available for that subscription.
+If captures 42, 43, and 44 complete between reads, the consumer can receive 44
+directly. The registry does not preserve a delivery queue for each consumer.
 
-For example, this is a valid registry state:
+The `last_read` cursor records the last successful read. It prevents the next
+read from immediately returning the same capture and lets the consumer sleep
+until something newer is ready. It does not require reading every capture.
 
-| Capture ID | Image stripe | Sensor stripe |
-| --- | --- | --- |
-| 100 | Slot 3 | Slot 1 |
-| 101 | Slot 4 | Missing |
-
-Image slot 3 and sensor slot 1 belong to capture 100. Equal physical slot numbers
-are unnecessary: `entries` performs the join. Consumers receive both views
-through a subscription to the corresponding group.
-
-`slots[slot]` holds `(SharedMemory, byte_offset)`. `slot_view()` slices the block's
-existing buffer at that offset for exactly `ctypes.sizeof(primitive)` bytes.
-Creating this `memoryview` does not copy those bytes.
-
-## How the bit masks represent presence
-
-### One bit per primitive
-
-`_bits` assigns a different power of two to each primitive:
-
-```python
-self._bits.setdefault(primitive, 1 << len(self._bits))
-```
-
-`1 << n` moves the binary digit `1` left by `n` positions:
-
-| `n` | `1 << n` in binary | Decimal |
-| --- | --- | --- |
-| 0 | `001` | 1 |
-| 1 | `010` | 2 |
-| 2 | `100` | 4 |
-
-When a primitive is new, the dictionary length gives the next unused position.
-`setdefault` preserves an existing primitive's assignment. Registration of
-additional primitives therefore leaves every existing entry and group mask valid.
-
-The following examples assume Image=`001`, Sensors=`010`, Other=`100`.
-The actual assignments depend on which primitive the owner encounters first,
-including primitives mentioned in subscriptions before their producers register.
-No particular datatype is guaranteed a particular bit position.
-
-### OR adds a primitive or combines a group
-
-Bitwise OR, `|`, sets a result bit if either operand has that bit set:
+The write lifecycle is:
 
 ```text
-    001   Image
-  | 010   Sensors
-  -----
-    011   Image and Sensors
+reserve a free slot → fill its bytes and ID → publish → match subscribed groups
 ```
 
-`entry.mask |= helper.bit` marks a newly published primitive as present while
-keeping all previously set bits. `_track_group()` uses the same operation to
-combine all primitives required by a subscription into `_masks[required]`.
+The read lifecycle is:
 
-OR is used instead of addition. `001 | 001` is still `001`, whereas adding those
-values gives `010`, which would incorrectly indicate a different primitive.
-The presence bit is stable; duplicate payload writes remain outside the producer
-contract.
+```text
+wait for a newer complete group → pin its entry → read views → unpin and advance
+```
 
-### AND tests whether every required primitive is present
+A lease is a context manager defining how long those views remain valid.
+While any reader holds an entry, its cells cannot be reclaimed.
+Payload processing happens outside the metadata lock.
 
-Bitwise AND, `&`, sets a result bit only if both operands have it set. The registry
-checks:
+There are three classes:
 
+| Class | Responsibility |
+| --- | --- |
+| `Entry` | Store one capture's primitive slots, reader count, and presence mask. |
+| `RegistryClient` | Present the lease API and request slots over a pipe. |
+| `CentralRegistry` | Own memory, match groups, manage leases, and serve clients. |
+
+The owner inherits the client's view-building code but overrides slot
+management. Local callers and remote stage clients therefore use the same API.
+
+## State and storage
+
+All matching metadata lives in the owner process. Clients receive shared-memory
+names and slot numbers; payload bytes stay in shared memory.
+
+| Owner field | Meaning |
+| --- | --- |
+| `producers[kind]` | Producer identity registered for this primitive. |
+| `entries[id][kind]` | Slot containing that primitive for this capture. |
+| `latest_id` | Highest ID presented for publication, including incomplete captures. |
+| `latest[group]` | Highest ID that completed the group; initially `None`. |
+| `last_read[consumer, group]` | Last successful read ID; initially `-1`. |
+| `data_array[kind]` | Shared-memory allocation for one primitive type. |
+| `free_slots[kind]` | Deque of cells available to writers. |
+| `_conditions[group]` | Sleeping readers interested in that group. |
+| `_connections` | Broker threads, stop watchers, and stage stop events. |
+
+A slot is a physical cell index, not a capture ID. Different primitives from
+the same capture can occupy different slot indices. For a primitive of size
+`size`, slot `s` occupies bytes `s * size : (s + 1) * size`.
+
+The owner uses one plain `Lock` for metadata. Each group has a `Condition`
+sharing that lock, so publishing can wake only the groups that advanced.
+A condition wait releases the lock while sleeping and reacquires it on waking.
+
+Preparation also caches primitive sizes, ID decoders, matching bitmasks, and
+the groups affected by each primitive. These avoid rebuilding layouts and
+scanning unrelated subscriptions during normal publication.
+Each broker also reuses a readiness selector and checks a local stop flag;
+the shared process event is handled by its sleeping watcher.
+
+## A complete local example
+
+Run with `src` on `PYTHONPATH`. The producer writes through ctypes; the reader
+uses `struct.unpack_from`, which accepts the read-only views.
+
+<!-- runnable: local-example -->
 ```python
-(entry.mask & required_mask) == required_mask
+import ctypes as ct
+import struct
+
+from core.central_registry import CentralRegistry
+
+
+class Image(ct.Structure):
+    _fields_ = [("ID", ct.c_uint64), ("pixels", ct.c_uint8 * 4)]
+
+
+class Sensors(ct.Structure):
+    _fields_ = [("altitude", ct.c_double), ("ID", ct.c_uint64)]
+
+
+registry = CentralRegistry()
+registry.register_producer("camera", Image)
+registry.register_producer("sensors", Sensors)
+registry.register_consumer("viewer", {Image, Sensors})
+
+try:
+    with registry.lease_slot_for_writing(Image) as buffer:
+        image = Image.from_buffer(buffer)
+        try:
+            image.ID = 42
+            image.pixels[:] = [10, 20, 30, 40]
+        finally:
+            del image
+
+    with registry.lease_slot_for_writing(Sensors) as buffer:
+        sensors = Sensors.from_buffer(buffer)
+        try:
+            sensors.ID = 42
+            sensors.altitude = 100.0
+        finally:
+            del sensors
+
+    with registry.lease_slot_for_reading({Image, Sensors}, "viewer") as buffers:
+        capture_id = struct.unpack_from("@Q", buffers[Image], Image.ID.offset)[0]
+        altitude = struct.unpack_from(
+            "@d", buffers[Sensors], Sensors.altitude.offset
+        )[0]
+        print(capture_id, altitude)  # 42 100.0
+finally:
+    registry.close()
 ```
 
-AND removes bits the group does not require. Equality then means that every
-required bit survived. Extra primitives are allowed:
+Deleting the ctypes objects before leaving each write lease releases their
+exported buffer references. Any derived NumPy arrays, slices, or memoryviews
+must also finish within the lease. Reading again without a new matching
+capture would block; raising inside a read lease leaves its cursor unchanged.
 
-| Entry mask | Required mask | AND result | Complete? |
-| --- | --- | --- | --- |
-| `001` — Image | `011` — Image + Sensors | `001` | No |
-| `101` — Image + Other | `011` — Image + Sensors | `001` | No |
-| `011` — Image + Sensors | `011` — Image + Sensors | `011` | Yes |
-| `111` — All three | `011` — Image + Sensors | `011` | Yes |
-| `010` — Sensors | `010` — Sensors | `010` | Yes |
+## Module helpers and Entry
 
-This runnable example follows the same operations as publication:
+### `_singleton(datatype)`
 
-```python
-IMAGE, SENSORS, OTHER = 0b001, 0b010, 0b100
-required = IMAGE | SENSORS
-present = IMAGE
-assert (present & required) != required
-present |= SENSORS
-assert (present & required) == required
-present |= OTHER
-assert (present & required) == required
-```
+Returns `frozenset({datatype})`. The `@cache` decorator reuses that immutable
+group for repeated single-primitive requests, avoiding repeated allocation.
 
-The source writes `entry.mask & mask == mask`; Python groups that expression as
-`(entry.mask & mask) == mask`.
+### `_primitives(datatype)`
 
-The mask mirrors the keys in `entry`. It says which pieces are present; the
-dictionary still says where their payloads are stored. It contains neither the
-capture ID nor reader counts. Python integers can grow beyond 32 or 64 bits, so
-the representation imposes no fixed datatype-count limit. Integer operations
-still scale with the number of integer digits for very large masks.
+Normalizes a primitive or group into a `frozenset`. Sets and frozensets become
+immutable groups; any other input is treated as one primitive via `_singleton`.
+The resulting group is the dictionary key used for subscriptions and matching.
 
-## Metadata and why it is cached
+### `_frame(length)`
 
-| Field | Meaning | Work avoided |
+Returns a cached `Struct("<{length}I")` for slot replies: `length` little-endian,
+unsigned 32-bit integers. Caching avoids recreating the binary layout for
+every lease. A group containing three primitives needs a 12-byte slot reply.
+
+### `Entry.__init__()`
+
+Initializes `readers = 0` and `mask = 0` on an otherwise empty dictionary.
+Dictionary items later map primitive classes to slot indices.
+The two attributes use `__slots__`, avoiding a separate instance attribute dict.
+
+`readers` pins the entire capture while leases are active. `mask` records which
+primitives are present, allowing a bitwise completeness check.
+
+## RegistryClient functions
+
+### `RegistryClient.__init__(pipe, ports, names)`
+
+Stores the pipe, shared-memory names, and an initially empty attachment map.
+It caches `ctypes.sizeof` for each primitive so buffer slicing needs no layout
+calculation during a lease.
+
+Each port describes a read group or a writable primitive, plus its ordered
+primitive tuple. The constructor indexes these ports and prebuilds their three
+command headers using `_COMMAND = Struct("<BI")`:
+
+| Operation | Value | Effect |
 | --- | --- | --- |
-| `data_array[primitive]` | Storage helper for that stripe | Rebuilding buffer layouts |
-| `entries[id]` | Primitive slots for a retained capture | Searching stripes for an ID |
-| `entry.mask` | Published primitive bits | Building sets of present fields per publication |
-| `entry.readers` | Active read leases on the full capture | Per-primitive reader bookkeeping |
-| `latest[group]` | Highest complete capture ID seen for this group | Scanning retained captures on every read |
-| `events[group][consumer]` | Whether unread matching data is available | Busy-waiting for new inputs |
-| `last_read[consumer, group]` | This subscription's consumed or currently leased ID | Re-delivering the same match |
-| `_bits[primitive]` | Stable presence bit | Reassigning primitive positions |
-| `_masks[group]` | Combined required bits | Recombining a group's requirements |
-| `_affected[primitive]` | Groups requiring this primitive | Testing unrelated groups on publication |
-| `_singletons[primitive]` | Cached one-primitive `frozenset` | Allocating a subscription key on every primitive read |
-| `entry.latest_groups` | Groups whose latest ID points here | Scanning every group on eviction |
+| Request | 0 | Obtain slots for this port. |
+| Commit | 1 | Complete the lease successfully. |
+| Cancel | 2 | Release the lease without committing it. |
 
-`_consumers` counts distinct stage identities for sizing. A stage with several
-subscriptions counts once under the one-active-read assumption.
+Each header is five bytes: one operation byte and a four-byte port index.
+The cached primitive tuple fixes the order used to encode and decode slots.
 
-`Entry` is a dictionary with `readers`, `mask` and `latest_groups` stored in
-`__slots__`. This keeps those fixed fields outside a separate instance attribute
-dictionary.
+### `RegistryClient.lease_slot_for_writing(datatype)`
 
-`_track_group()` runs once for each distinct group. It assigns any missing bits,
-builds the required mask and publication index, and scans existing entries for a
-match. That initial scan is needed when registering a consumer during acquisition.
-Subsequent publications update the cached result incrementally.
+Returns `_lease(datatype)`: a context manager yielding one writable memoryview.
+The argument is a registered primitive class. Successful exit publishes its
+contents; an exception cancels publication and returns the cell.
 
-When a group advances from capture 100 to 101, it is removed from
-`entries[100].latest_groups` and added to `entries[101].latest_groups`. This is
-the inverse of `latest[group] = 101`. If entry 100 has already been evicted, there
-is no old reverse index to update.
+### `RegistryClient.lease_slot_for_reading(datatype, consumer)`
 
-Producer registration tracks the singleton group and the set of all currently
-registered producers. Subscriptions are immutable sets: adding a producer does
-not change an existing consumer's group. A consumer that needs the expanded set
-must register that set explicitly. Earlier tracked groups remain valid.
+Normalizes the primitive or group and returns its lease context manager.
+The context yields `{primitive: read_only_memoryview}`, even for one primitive.
+On the owner, `consumer` selects the subscription cursor. A remote client's
+identity is already bound to its stage connection by `for_stage`.
 
-## Writer lease: reserve, fill, associate
+### `RegistryClient._lease(datatype, consumer=None)`
 
-1. Under `_lock`, reserve a free cell from this primitive's queue.
-2. Yield its writable view. The producer fills it directly, including `ID`.
-   The metadata lock is released while the producer works.
-3. On successful exit, read the ID and call `_record_data()` while the view is
-   still valid. The helper caches the ID field's offset and a `Struct` decoder,
-   so the registry reads only that small field rather than constructing an image
-   struct or copying its payload.
-4. Under `_lock`, find or create the capture entry. If capacity is full and a
-   new entry is needed, evict the oldest entry without readers.
-5. Store the primitive's slot and OR its bit into `entry.mask`.
-6. Test only `_affected[primitive]`. A complete group advances only if this ID
-   exceeds its previous latest ID; update its reverse index and subscriber events.
-7. Release the temporary view. If the write failed or was discarded, return the
-   reserved cell to the free queue. Published cells stay allocated to their entry.
+This is the common view-building layer for both local and remote leases:
 
-A failed write does not publish its bytes or evict an entry simply to obtain a
-cell. The extra cell in each stripe makes allocation possible before association.
+1. Enter `_slots` to obtain `{primitive: slot_index}`.
+2. Slice each shared-memory allocation using its cached primitive size.
+3. Convert read slices with `toreadonly()`.
+4. Yield a mapping for reads, or the single primitive's view for writes.
+5. Release all generated views in `finally`, before exiting `_slots`.
 
-`_record_data()` currently logs input metadata. It does not save image or sensor
-payloads to disk. A future persistence implementation belongs in this hook and
-must finish accessing the leased view before returning. It runs outside `_lock`
-and before association or stale-ID rejection, so rejected inputs also reach it.
+That cleanup order matters: slots become reusable only after the views have
+been released. Exceptions reach the underlying slot context, which cancels
+the lease. The owner inherits this method unchanged.
 
-## Latest ordering and stale-ID admission
+### `RegistryClient._slots(datatype, consumer=None)`
 
-There are two separate high-water marks:
+This is the remote implementation of slot management. It sends the cached
+request header, blocks for a slot reply, and decodes it using `_frame`.
+It attaches to each required shared-memory allocation on first use and reuses
+that attachment on later requests.
 
-- `latest_id` is the highest received ID from any producer, including incomplete
-  captures.
-- `latest[group]` is the highest complete ID for that particular group.
+The method yields a primitive-to-slot dictionary. Normal exit sends commit;
+an exception, including attachment failure after the reply, sends cancel.
 
-A group starts with `latest[group] = None`. The global mark and each consumer's
-cursor start at `-1`, below every valid capture ID.
+Commands use `send_bytes` and `recv_bytes`: payloads and per-request Python
+objects are not pickled. There is no completion acknowledgement after commit.
+The pipe preserves command order, but leaving a remote write lease does not
+prove that the owner has already updated its dictionaries at that instant.
 
-An older capture already present in `entries` can receive a missing primitive.
-An absent ID below `latest_id` is discarded. For example, if Image 100 is retained
-and Image 108 arrives, Sensors 100 can still complete capture 100. Sensors 97 is
-discarded if capture 97 is absent, even when no complete group has reached 108.
+### `RegistryClient.close()`
 
-Neither mark moves backwards. When a latest complete entry is evicted,
-`latest[group]` keeps its ID and its subscribers' events are cleared. An older
-retained match cannot become the group's latest again; consumers wait for a
-newer complete match. This also prevents late fields from resurrecting evicted
-captures as fresh packets.
+Closes the connection, closes every attached shared-memory handle, and clears
+the attachment map. It does not unlink the owner's allocations.
+Close after finishing leases and releasing derived buffer references.
+Disconnecting also lets the broker cancel any outstanding leases it owns.
 
-`entries` is an `OrderedDict` in entry-creation order. Adding another primitive
-to an existing capture does not move it. Eviction scans from the oldest entry,
-skips captures with active readers, and frees every primitive cell belonging to
-the first eligible capture.
+## CentralRegistry functions
 
-## Reader lease: wait, pin, release
+### `CentralRegistry.__init__(logger=None, matching_window=MATCHING_WINDOW)`
 
-Each subscription has its own event, so one consumer clearing its readiness does
-not consume another consumer's notification. An event is a readiness flag,
-not a queue or packet counter. Several publications before the next read coalesce
-into one notification, and that read receives the highest complete matching ID.
+Creates empty metadata, the shared lock, and lifecycle flags. No shared memory
+or threads are allocated yet. `logger` is accepted but unused.
+`matching_window` defaults to 16 and is clamped to at least one.
 
-1. Wait on the subscription's event. A stage process blocks on its pipe while
-   the registry's worker waits on this owner-local event.
-2. Take `_lock` and check the event again. Eviction may have cleared it between
-   waking and acquiring the lock.
-3. Obtain the latest complete entry, create read-only views for the required
-   primitives, and increment `entry.readers`.
-4. Save the previous cursor, set `last_read` to the leased ID, and clear the event.
-   The cursor also lets the pipe server identify this active lease.
-5. Yield the views with the metadata lock released. The reader count keeps all
-   cells belonging to this capture out of the eviction path.
-6. Release the views and decrement the reader count under `_lock`. On failure,
-   restore the old cursor and recompute readiness, allowing a retry of the latest
-   retained match.
+The owner does not call the client constructor: it manages slots directly
+instead of holding a remote pipe. `prepare` later supplies its size cache.
 
-If a newer match arrives during a lease, publication sets the event again.
-Successful release does not clear that notification. The next read obtains the
-newer capture. If the newest match was evicted during a failed read, readiness
-stays clear until a newer complete retained match becomes available.
+### `CentralRegistry.register_producer(producer, datatype)`
 
-The reader count belongs to the full capture. A primitive reader therefore pins
-every cell already associated with that entry. A missing primitive may still be
-added in a different cell; the no-duplicate-write assumption prevents an existing
-primitive from being overwritten while a reader uses it.
+Associates one primitive class with its producer identity.
+A second producer registration for the same datatype raises `ValueError`.
+Registration after preparation or shutdown raises `RuntimeError`.
 
-Read-only views enforce access through that view; the reader count and slot pool
-enforce safe reuse. All arrays or additional views derived from a leased buffer
-must also stay inside the lease, because the cell may be reused after release.
+Producer identities are used by `for_stage` to select writable ports.
+The local write API assumes callers use the appropriate producer.
 
-## Capacity, the spare cell, and live growth
+### `CentralRegistry.register_consumer(consumer, datatype)`
 
-For `k` distinct consumers and matching window `w`, the registry uses:
+Normalizes the requested group, creates its latest-ID entry and condition if
+needed, and initializes `last_read[consumer, group]` to `-1`.
+
+Consumers of the same group share matching state and a condition, while their
+read cursors remain separate. Re-registering a subscription before preparation
+resets its cursor. Registration after preparation or shutdown is rejected.
+
+### `CentralRegistry.prepare()`
+
+Freezes registration and allocates storage. It runs explicitly or automatically
+on the first lease or `for_stage` call. Repeated calls return once prepared;
+calls after close raise `EOFError`. A second check inside the lock prevents
+concurrent callers from allocating twice.
+
+For `k` distinct consumers and matching window `w`, it sets:
+
+```text
+array_length  = k + w       # Maximum number of retained capture entries.
+buffer_length = k + w + 1   # Cells allocated for each primitive.
+```
+
+At most `k` captures can be pinned under the operating rules. Since `w >= 1`,
+a full entry table still has an unpinned entry available for eviction.
+The extra cell lets a producer reserve space before its capture ID is known.
+
+Preparation builds these caches:
+
+| Cache | Purpose |
+| --- | --- |
+| `_sizes[kind]` | Byte length of one primitive. |
+| `_bits[kind]` | A unique power-of-two presence bit. |
+| `_masks[group]` | Combined bits required by a group. |
+| `_affected[kind]` | Only the groups containing this primitive. |
+| `_ids[kind]` | ID field offset and a bound integer decoder. |
+
+It then creates one shared-memory block per primitive and a deque containing
+all its slot indices. Only after allocation does it mark itself prepared.
+
+### `CentralRegistry._publish(datatype, slot, capture_id)`
+
+Runs with the metadata lock held and returns whether the slot was retained.
+First it advances the global highest-seen ID and looks up the capture entry.
+
+If the entry is absent and the ID is below the global highest ID, publication
+is rejected. Existing older entries can still receive missing primitives.
+When a new entry is needed and capacity is full, the oldest unpinned entry
+is removed and all its primitive slots are returned to their free deques.
+
+A second publication of the same primitive for the same capture is rejected,
+preserving the original bytes. The caller reclaims rejected write slots.
+
+For an accepted primitive, the method records its slot and sets its presence
+bit. It checks only `_affected[datatype]`, using:
 
 ```python
-array_length = max(ARRAY_LENGTH, k + w)
-buffer_length = max(BUFFER_LENGTH, array_length + 1)
+complete = entry.mask & required_mask == required_mask
 ```
 
-With the default `w = 16`, this is `k + 16` retained entries and `k + 17` cells
-per primitive. For `p` stripes there are `p * (k + 17)` cells, with byte sizes
-determined by each datatype rather than a common image-sized cell.
+For example, bits `001` and `100` satisfy a group mask of `101`.
+A complete capture advances `latest[group]` only if its ID exceeds the previous
+value. Only an advancing group's condition receives `notify_all()`.
 
-At most `k` entries are pinned under the read-lease assumption. The matching
-window reserves additional space for recent captures, including incomplete ones.
-The extra cell per stripe is for its one outstanding writer: its ID is not known
-yet, so the registry cannot decide which entry to associate or evict at allocation.
+Eviction does not reset `latest[group]`: that value is historical, and the
+read path separately verifies that its capture still exists.
 
-Once the write completes, association either uses an existing entry or evicts an
-unread entry before creating a new one. Discard and failure return the spare cell
-directly. This maintains available write storage without having the helper decide
-which capture to discard.
+### `CentralRegistry._slots(datatype, consumer=None, stopped=None)`
 
-The window is measured in captures, not time. A 16-capture budget is intended to
-cover a lead of 15 captures, about 250 ms at 60 Hz, with reader-held captures
-budgeted separately. Delays beyond retention can lose a match and produce stale-ID
-warnings; the registry cannot retain arbitrary desynchronization in bounded space.
+This overrides the client's pipe implementation with actual ownership logic.
+It calls `prepare` and distinguishes a read group from a writable primitive.
 
-When a new consumer increases capacity, `grow()` appends a new shared-memory block
-and new slot descriptors. It does not resize, rename or move existing blocks.
-Existing reader and writer views therefore remain valid. A newly registered
-primitive gets its own stripe at the current capacity.
+For a write, it removes one free slot while holding the lock, then yields it
+with the lock released. After successful filling, it decodes the ID directly
+from shared memory using the cached offset and decoder, outside the lock.
+It then locks only to publish. Failed or rejected writes return their slot;
+an accepted write leaves the slot owned by its capture entry.
 
-## Process transport and the packed references
+For a read, it loops under the lock until the group's latest capture exists
+and is newer than that subscription's cursor. It checks owner shutdown and
+the optional local stage stop event before waiting, raising `EOFError` if stopped.
+Otherwise it sleeps on that group's condition, with no timeout or polling.
 
-`PipelineStage.start()` obtains a `RegistryClient` from `for_stage()`. The owner
-creates a pipe and worker thread for each registered subscription or producer
-port. Separate ports allow a stage to hold an input lease while writing an output.
+Once eligible, the entry's reader count is incremented and its slots are
+yielded with the lock released. On exit the count is decremented.
+Only successful exit advances `last_read`; failure leaves the cursor unchanged,
+so a retry can receive that capture again if it remains available.
 
-```mermaid
-flowchart LR
-    P[Producer process] -->|Write request and completion| O[Registry owner]
-    C[Consumer process] -->|Read request and completion| O
-    O -->|Buffer references| P
-    O -->|Buffer references| C
-    P -->|Writable mapping| S[Shared memory]
-    C -->|Read-only mapping| S
-    O -->|Capture IDs and stripe slots| M[Owner-local metadata]
-```
+The loop rechecks its predicate after every wake. Another reader's activity,
+shutdown, or a wake without an eligible capture therefore cannot return stale
+or reclaimed cells. Successful writes avoid an extra cleanup lock acquisition.
 
-Each port retains a fixed primitive ordering. The owner constructs this tuple
-and passes it with the client; reconstructing order from a `frozenset` in a spawned
-process could pair an image reference with the sensor datatype.
+### `CentralRegistry.for_stage(stage, stopped)`
 
-The connection exchanges these message bodies:
+Prepares the owner and selects the stage's subscribed groups and produced
+primitives. These become the connection's indexed read and write ports.
 
-| Direction | Message | Meaning |
-| --- | --- | --- |
-| Stage to owner | `b"W"` or `b"R"` | Request the next write or read lease on this port |
-| Owner to stage | `b"B" + names` | New shared-memory names, separated by NUL bytes |
-| Owner to stage | `b"F" + references` | Packed block-index/byte-offset pairs for this lease |
-| Stage to owner | `b"1"` | Lease completed successfully |
-| Stage to owner | `b"2"` | Lease failed; trigger the context manager's rollback |
-| Stage to owner | `b"0"` | Stop this reader connection after releasing the current lease |
+It creates a duplex command pipe, a separate one-way wake pipe, and two daemon
+threads: `_serve` handles requests and `_stop` waits for the stage's event.
+It records these threads for shutdown and returns a `RegistryClient` containing
+the remote endpoint, port definitions, and shared-memory names.
 
-The port is already registered as reading or writing; the owner does not need to
-deserialize a datatype or dispatch on the request letter.
+It also creates a local `threading.Event`. The watcher mirrors shared shutdown
+into this event, so broker and read-loop checks avoid multiprocessing locks.
+The shared event remains the signal used by stage processes and owner shutdown.
 
-For each connection, `known_blocks` maps a memory name to a small sequential
-index. The client's `blocks` list uses the same order. New names are sent once
-in a B message, and the client attaches to them before decoding the next F message.
-Live growth can add B messages later without invalidating earlier indexes.
+The client can be passed to a spawned stage process. Only the owner has the
+matching dictionaries and broker threads. The stop event must be shared with
+that process, and unused copies of pipe endpoints should be closed so that
+disconnects can produce EOF.
 
-The precompiled layout is:
+### `CentralRegistry._stop(stopped, groups, signal, local_stop)`
 
-```python
-Struct("<" + "IQ" * primitive_count)
-```
+Blocks in `stopped.wait()` until shutdown is requested.
+It sets the local stop event before acquiring the metadata lock and notifying
+the stage's subscribed groups, waking brokers blocked inside read requests.
 
-`<` selects little-endian byte order and standard sizes without alignment padding.
-Each `I` is a 4-byte unsigned block index; each `Q` is an 8-byte unsigned offset in
-bytes. References are flattened as `[block0, offset0, block1, offset1, ...]`.
-The F body is `1 + 12 * primitive_count` bytes: 13 bytes for one primitive or
-25 for an image/sensor pair, regardless of image resolution. The multiprocessing
-pipe adds its own framing bytes.
+Finally it closes the wake pipe's sending endpoint. EOF makes the receiving
+endpoint ready, waking an idle broker blocked in `selector.select()`.
+The watcher uses neither periodic event checks nor timed waits.
 
-For example, names at client indexes 0 and 1, with references `[0, 96, 1, 0]`, mean
-“use the first block at byte 96 and the second block at byte 0.” The datatype's
-size determines the end of each view. A slot index is never mistaken for a byte
-offset, and absolute virtual addresses are never sent between processes.
+### `CentralRegistry._serve(pipe, wake, ports, stage, stopped, local_stop)`
 
-For a write, `reserve_slot()` records `helper.writing_slot`. The one-outstanding-
-writer assumption makes that slot sufficient for the server to call
-`slot_location()` directly. This retains the earlier optimization that avoids
-scanning blocks and computing offsets from buffer addresses. For reads, the entry
-already provides each primitive's slot, so the same method supplies its location.
+This is one connection's broker loop. It caches reply layouts and holds active
+slot contexts in `leases`, indexed by port. One `PollSelector` registers the
+command and wake pipes once and is reused until the broker exits. With no
+active lease, `select()` blocks for a command or wake-pipe EOF, without a timer.
+The loop and read requests check `local_stop`; only the watcher waits on the
+shared event. Selector setup and multiprocessing stop checks stay off this path.
 
-The owner holds its context manager open until the acknowledgement arrives.
-A write becomes visible to readers only after the owner processes its successful
-acknowledgement and associates the cell. A read acknowledgement ends the reader
-pin. `_CancelledLease` routes a failure acknowledgement through the same exception
-cleanup as a failed local lease, then allows the connection to serve another request.
+For request operation 0, it enters the owner's slot context and replies with
+the ordered slot indices. That context remains open across pipe messages.
+For commit operation 1, it exits the context normally. For cancel operation 2,
+it passes `GeneratorExit` into the context to skip success processing while
+still running cleanup. This does not terminate the broker thread.
 
-Only metadata is packed or copied by this protocol. Stage views slice attached
-shared memory directly. End-to-end zero-copy also requires producers to acquire
-or generate into the writable lease, and consumers to use those views directly.
+A stage can hold an input lease while acquiring a different output port.
+However, concurrent requests from multiple callers on one client are not
+supported: replies have no request identifier or demultiplexing layer.
 
-## Shutdown and verification
+After stop is set, active leases are allowed to finish or disconnect before
+the loop exits. With leases held, the broker waits for commands using
+`recv_bytes`; it does not revoke cells still in use.
 
-`_ConsumerEvent` is an ordinary event with a stop check during timed 100 ms waits.
-The thread sleeps while waiting; it does not spin over registry contents. A stage
-waiting for its first packet can therefore stop without needing another publication.
-Stop and join stage processes before closing the registry so active leases finish
-and their client attachments close. `CentralRegistry.close()` signals stop flags,
-joins connection workers, closes pipes, and closes/unlinks the owner's blocks.
+EOF or a broken pipe ends service. The `finally` block cancels remaining
+leases, sets the shared stop event to release the watcher, and closes both
+endpoints. It also closes the selector, including on cancellation or disconnect.
 
-The implementation retains the measured performance optimizations. Future
-simplifications should be benchmarked against it before being kept. Source
-comments and this guide explain the caches without adding work to the frame path.
+### `CentralRegistry.close()`
 
-The [restoration benchmark](central_registry_restore_benchmark.json) compares
-the saved versions using actual pipe leases, owner threads and in-process clients.
-Each variant has five interleaved runs of 3,000 captures after 300 warmup captures.
-Logging is disabled and the primitive structs are small; these numbers measure
-lease and metadata CPU costs, excluding image filling and camera acquisition.
+Marks the owner closed under the lock, sets all recorded stage stop events,
+and notifies every group condition. It then releases the lock before joining
+broker and watcher threads, allowing their cleanup to acquire it.
 
-| Stripes / consumers | Restored masks + packed | Original masks + packed | Sets + packed | Sets + plain references |
-| --- | --- | --- | --- | --- |
-| 2 / 1 | 73.46 µs | 75.08 µs | 72.70 µs | 77.15 µs |
-| 2 / 8 | 265.83 µs | 265.80 µs | 261.35 µs | 278.38 µs |
-| 8 / 1 | 229.40 µs | 239.52 µs | 233.95 µs | 251.58 µs |
+Finally it closes and unlinks all owned shared-memory blocks and clears their
+map. Entry dictionaries and cursor values remain historical metadata.
+There is no join timeout: a connected client holding a lease must finish or
+disconnect before shutdown can complete.
 
-Values are median CPU time per capture across all producer and consumer leases.
-The restored version uses about 4.5–8.8% less CPU than the latest plain-reference
-simplification in these cases. The intermediate set-based version is slightly
-ahead in the two-stripe cases and behind in the eight-stripe case; these figures
-do not establish one winner for every subscription pattern. The earlier
-group-matching benchmark also found a cost to removing masks with eight stripes.
-The retained direct writer-slot lookup improves on the original pointer scan,
-with the eight-consumer result effectively unchanged within measurement noise.
+## Operating rules
 
-The benchmark also checks that the executable source matches the saved mask-based
-implementation with just the retained direct writer-slot lookup. Documentation
-does not add work to acquisition or consumption.
+- Register all producers and consumers before preparation or first use.
+- Use one producer and at most one outstanding write lease per primitive.
+- Hold at most one read lease per consumer, across all its subscriptions.
+- Use each remote client sequentially; nested input/output ports are allowed.
+- Give every subscribed primitive a producer and use nonempty groups.
+- Use fixed-size, pointer-free ctypes layouts with an integer `ID` field or alias.
+- ID widths must be 1, 2, 4, or 8 bytes; decoding uses native unsigned integers.
+- Use nonnegative IDs from one shared increasing capture sequence. Do not reset
+  counters while the registry is live.
+- Keep all views and objects referencing their bytes inside the lease.
+- Finish local leases and close/join stage clients before closing the owner.
 
-Focused checks cover matching and out-of-order fields, reader protection,
-failed-lease retries, live growth, stale-ID rejection, and real stage transport:
+These are caller contracts rather than a comprehensive validation layer.
+For example, an unsupported ID width or a subscribed type without a producer
+fails during preparation, and overlapping writes can exhaust free cells.
+The compact implementation does not provide transactional preparation rollback.
 
-```sh
-PYTHONPATH=src .venv/bin/pytest -q \
-  tests/test_central_registry.py \
-  tests/test_central_registry_demo.py \
-  tests/test_pipeline_stage_registry.py \
-  tests/test_pipeline_runtime.py
-```
-
-The runtime tests also exercise independent image and sensor processes at 60 Hz
-with consumers holding leases for several seconds. They check matched IDs and
-clean shutdown; they are not substitutes for testing acquisition performance on
-the target camera and hardware.
+Idle consumers sleep on conditions; idle brokers sleep on pipe readiness;
+stop watchers sleep on events. Normal publication checks only affected groups,
+and binary commands carry slot metadata rather than payloads. These are the
+main mechanisms that keep CPU use low while retaining the small implementation.

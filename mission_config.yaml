@@ -1,59 +1,24 @@
 - dummy_consumer:
   - default:
-    - instances: 10
+    - instances: 5
     - release_delay_range:
       - 3.0
       - 4.0
-- cam:
-  - camera_engine:
+- image_generator:
+  - default:
+    - generation_rate_hz: 60
+    - first_capture_id: 0
     - resolution:
       - 5320
       - 3032
     - channels: 1
-    - pixel_format: BayerRG8
-    - offset_x: 0
-    - offset_y: 0
-    - reverse_x: false
-    - reverse_y: false
-    - start_delay: 0
-    - acquisition_time: 300
-    - acquisition_frame_rate_enable: false
-    - acquisition_frame_rate: 5.0
-    - exposure_mode: Timed
-    - exposure_auto: Continuous
-    - exposure_time: 1000.0
-    - auto_gain: Continuous
-    - gain: 0.0
-    - profile:
-        min_exposure_time: 100
-        max_exposure_time: 2000
-        min_auto_gain: 0.0
-        max_auto_gain: 5.0
-        auto_target_brightness: 0.2
-    - auto_function_profile: MinimizeGain
-    - gamma: 1.0
-    - black_level: 0.0
-    - bsl_color_space: null
-    - balance_white_auto: Continuous
-    - light_source_preset: Daylight5000K
-    - trigger_selector: FrameStart
-    - trigger_mode: 'On'
-    - trigger_source: Software
-    - trigger_activation: RisingEdge
-    - trigger_delay: 0.0
-    - line_selector: Line2
-    - line_mode: Output
-    - line_source: ExposureActive
-    - line_inverter: false
-    - max_num_buffer: 10
-    - output_queue_size: 10
-    - chunk_mode_active: true
-    - chunk_selector: CounterValue
-    - chunk_counter_selector: Counter2
-    - chunk_enable: true
+    - bar_width: 200
+    - bar_speed_px: 80
+    - exposure_time: 0.0
+    - gain: 1.0
 - sensor_generator:
   - default:
-    - external_clock: true
+    - external_clock: false
     - generation_rate_hz: 60
     - first_capture_id: 0
     - latitude: 45.0

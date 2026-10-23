@@ -50,6 +50,8 @@ FIELD_REGISTRY: dict[str, list[tuple[str, type]]] = {
         ("bsl_color_space", ct.c_char * TEXT_CAPACITY),
         ("gamma", ct.c_double),
         ("light_source_preset", ct.c_char * TEXT_CAPACITY),
+        ("image", ct.c_uint8 * IMAGE_SIZE),
+        ("_camera_chunks", ct.c_uint8 * 4096),
     ],
     "PixData": [
         ("lat", ct.c_double),
@@ -70,9 +72,7 @@ class PhotoExif(ct.Structure):
 
     # The SDK appends chunk metadata after pixels when grabbing into this buffer.
     _fields_ = [
-        *FIELD_REGISTRY["PhotoExif"],
-        ("image", ct.c_uint8 * IMAGE_SIZE),
-        ("_camera_chunks", ct.c_uint8 * 4096),
+        *FIELD_REGISTRY["PhotoExif"]
     ]
 
 
@@ -88,7 +88,6 @@ class AggregatedMetadata(ct.Structure):
     _fields_ = [
         *FIELD_REGISTRY["PhotoExif"],
         *FIELD_REGISTRY["PixData"],
-        ("image", ct.c_uint8 * IMAGE_SIZE),
     ]
 
     def __init__(self):
@@ -98,7 +97,6 @@ class AggregatedMetadata(ct.Structure):
 # A common registry ID backed by each struct's existing capture field.
 PhotoExif.ID = PhotoExif.frame_counter
 PixData.ID = PixData.camera_trigger_seq
-AggregatedMetadata.ID = AggregatedMetadata.frame_counter
 
 
 class ConnectionSpec(TypedDict):
